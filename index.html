@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <title>Messie Chat</title>
 
@@ -13,16 +13,22 @@
             padding: 0;
         }
 
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
         body {
             font-family: Arial, sans-serif;
             background: #f1f3f6;
-            height: 100vh;
+            height: 100dvh;
             overflow: hidden;
         }
 
         .app {
             width: 100%;
-            height: 100vh;
+            height: 100dvh;
             display: flex;
             flex-direction: column;
             background: white;
@@ -32,6 +38,7 @@
 
         .header {
             height: 65px;
+            min-height: 65px;
             background: #075e54;
             color: white;
             display: flex;
@@ -48,12 +55,14 @@
         .status {
             font-size: 12px;
             opacity: 0.85;
+            margin-top: 3px;
         }
 
         /* CHAT */
 
         .chat {
             flex: 1;
+            min-height: 0;
             padding: 15px;
             overflow-y: auto;
             background: #efeae2;
@@ -70,12 +79,17 @@
             color: #075e54;
         }
 
+        .welcome p {
+            margin-top: 5px;
+        }
+
         .message {
             margin: 10px 0;
             padding: 10px 13px;
             border-radius: 12px;
             max-width: 80%;
             word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .user-message {
@@ -96,22 +110,27 @@
             text-align: right;
         }
 
-        /* INPUT */
+        /* ZONE D'ÉCRITURE */
 
         .input-area {
-            min-height: 65px;
+            min-height: 70px;
             padding: 10px;
+            padding-bottom: calc(10px + env(safe-area-inset-bottom));
             display: flex;
+            align-items: center;
             gap: 8px;
             background: #f0f2f5;
             border-top: 1px solid #ddd;
+            flex-shrink: 0;
         }
 
         .input-area input {
             flex: 1;
+            min-width: 0;
+            height: 48px;
             border: none;
             outline: none;
-            padding: 13px;
+            padding: 13px 16px;
             border-radius: 25px;
             font-size: 15px;
             background: white;
@@ -119,6 +138,7 @@
 
         .send-button {
             width: 48px;
+            min-width: 48px;
             height: 48px;
             border: none;
             border-radius: 50%;
@@ -126,6 +146,9 @@
             color: white;
             font-size: 20px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .send-button:active {
@@ -140,6 +163,8 @@
             color: white;
             font-size: 25px;
             cursor: pointer;
+            width: 40px;
+            height: 40px;
         }
 
         .menu {
@@ -147,9 +172,9 @@
             top: 60px;
             right: 10px;
             background: white;
-            width: 180px;
+            width: 190px;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             display: none;
             overflow: hidden;
             z-index: 10;
@@ -162,10 +187,52 @@
             padding: 15px;
             text-align: left;
             font-size: 15px;
+            cursor: pointer;
         }
 
         .menu button:hover {
             background: #f1f1f1;
+        }
+
+        /* PETITS ÉCRANS */
+
+        @media (max-width: 400px) {
+
+            .header {
+                height: 60px;
+                min-height: 60px;
+                padding: 0 12px;
+            }
+
+            .logo {
+                font-size: 19px;
+            }
+
+            .status {
+                font-size: 11px;
+            }
+
+            .chat {
+                padding: 10px;
+            }
+
+            .input-area {
+                min-height: 68px;
+                padding-left: 8px;
+                padding-right: 8px;
+            }
+
+            .input-area input {
+                font-size: 14px;
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+
+            .send-button {
+                width: 46px;
+                min-width: 46px;
+                height: 46px;
+            }
         }
     </style>
 </head>
@@ -174,36 +241,63 @@
 
 <div class="app">
 
+    <!-- EN-TÊTE -->
+
     <header class="header">
 
         <div>
             <div class="logo">Messie Chat</div>
-            <div class="status">En ligne</div>
+            <div class="status">🟢 En ligne</div>
         </div>
 
-        <button class="menu-button" onclick="toggleMenu()">⋮</button>
+        <button
+            class="menu-button"
+            onclick="toggleMenu()"
+            aria-label="Menu"
+        >
+            ⋮
+        </button>
 
     </header>
 
+
+    <!-- MENU -->
+
     <div class="menu" id="menu">
-        <button onclick="nouvelleConversation()">💬 Nouvelle conversation</button>
+
+        <button onclick="nouvelleConversation()">
+            💬 Nouvelle conversation
+        </button>
+
         <button onclick="alert('Le profil sera disponible bientôt.')">
             👤 Mon profil
         </button>
+
         <button onclick="alert('Les paramètres arrivent bientôt.')">
             ⚙️ Paramètres
         </button>
+
     </div>
+
+
+    <!-- CONVERSATION -->
 
     <main class="chat" id="chat">
 
         <div class="welcome">
+
             <h2>Bienvenue 👋</h2>
+
             <p>Bienvenue sur Messie Chat.</p>
+
             <p>Commence une conversation.</p>
+
         </div>
 
     </main>
+
+
+    <!-- ZONE D'ÉCRITURE -->
 
     <div class="input-area">
 
@@ -212,9 +306,14 @@
             id="messageInput"
             placeholder="Écris un message..."
             autocomplete="off"
+            enterkeyhint="send"
         >
 
-        <button class="send-button" onclick="sendMessage()">
+        <button
+            class="send-button"
+            onclick="sendMessage()"
+            aria-label="Envoyer"
+        >
             ➤
         </button>
 
@@ -222,11 +321,13 @@
 
 </div>
 
+
 <script>
 
     const input = document.getElementById("messageInput");
     const chat = document.getElementById("chat");
     const menu = document.getElementById("menu");
+
 
     /* ENVOYER UN MESSAGE */
 
@@ -265,29 +366,42 @@
         input.value = "";
 
         chat.scrollTop = chat.scrollHeight;
+
+        input.focus();
     }
 
-    /* ENTRÉE CLAVIER */
+
+    /* TOUCHE ENTRÉE */
 
     input.addEventListener("keydown", function(event) {
 
         if (event.key === "Enter") {
+
+            event.preventDefault();
+
             sendMessage();
+
         }
 
     });
+
 
     /* MENU */
 
     function toggleMenu() {
 
         if (menu.style.display === "block") {
+
             menu.style.display = "none";
+
         } else {
+
             menu.style.display = "block";
+
         }
 
     }
+
 
     /* NOUVELLE CONVERSATION */
 
@@ -301,9 +415,11 @@
         `;
 
         menu.style.display = "none";
+
     }
 
-    /* PROTECTION HTML */
+
+    /* PROTECTION CONTRE LE HTML */
 
     function escapeHTML(text) {
 
@@ -312,7 +428,24 @@
         div.textContent = text;
 
         return div.innerHTML;
+
     }
+
+
+    /* FERMER LE MENU EN CLIQUANT AILLEURS */
+
+    document.addEventListener("click", function(event) {
+
+        const button = document.querySelector(".menu-button");
+
+        if (
+            !menu.contains(event.target) &&
+            !button.contains(event.target)
+        ) {
+            menu.style.display = "none";
+        }
+
+    });
 
 </script>
 
