@@ -2016,7 +2016,93 @@ async function openConversation(profile) {
     /* =====================================================
        ENVOI TEMPORAIRE
     ===================================================== */
+async function sendMessage() {
 
+    const text =
+        messageInput.value.trim();
+
+
+    if (!text) {
+
+        return;
+
+    }
+
+
+    if (!currentUser || !currentContact) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("messages")
+                .insert({
+
+                    sender_id:
+                        currentUser.id,
+
+                    receiver_id:
+                        currentContact.id,
+
+                    content:
+                        text
+
+                })
+                .select()
+                .single();
+
+
+        if (error) {
+
+            console.error(
+                "Erreur envoi message :",
+                error
+            );
+
+            alert(
+                "Impossible d'envoyer le message."
+            );
+
+            return;
+
+        }
+
+
+        messageInput.value =
+            "";
+
+
+        displayMessage(
+            data
+        );
+
+
+        chat.scrollTop =
+            chat.scrollHeight;
+
+
+    } catch (error) {
+
+        console.error(
+            "Erreur inattendue :",
+            error
+        );
+
+        alert(
+            "Une erreur est survenue lors de l'envoi."
+        );
+
+    }
+
+    }
    /* =====================================================
    CHARGER LES MESSAGES
 ===================================================== */
