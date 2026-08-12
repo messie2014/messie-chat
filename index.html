@@ -12,6 +12,9 @@
 
     <title>Messie Chat</title>
 
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
 
         * {
@@ -30,6 +33,11 @@
             font-family: Arial, sans-serif;
             background: #f1f3f6;
             overflow: hidden;
+        }
+
+        button,
+        input {
+            font-family: inherit;
         }
 
         /* =========================
@@ -51,11 +59,191 @@
 
 
         /* =========================
+           AUTHENTIFICATION
+        ========================= */
+
+        .auth-page {
+            width: 100%;
+            height: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #075e54,
+                    #128c7e
+                );
+
+            overflow-y: auto;
+        }
+
+
+        .auth-card {
+            width: 100%;
+            max-width: 420px;
+
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 28px 22px;
+
+            box-shadow:
+                0 10px 35px rgba(0, 0, 0, 0.20);
+        }
+
+
+        .auth-logo {
+            text-align: center;
+
+            color: #075e54;
+
+            font-size: 30px;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+
+        .auth-subtitle {
+            text-align: center;
+
+            color: #777;
+
+            font-size: 14px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .auth-title {
+            font-size: 22px;
+
+            color: #222;
+
+            margin-bottom: 18px;
+        }
+
+
+        .auth-input {
+            width: 100%;
+
+            height: 50px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 10px;
+
+            outline: none;
+
+            padding: 0 14px;
+
+            margin-bottom: 12px;
+
+            font-size: 15px;
+        }
+
+
+        .auth-input:focus {
+            border-color: #075e54;
+        }
+
+
+        .primary-button {
+            width: 100%;
+
+            height: 50px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #075e54;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        .primary-button:active {
+            transform: scale(0.98);
+        }
+
+
+        .auth-switch {
+            text-align: center;
+
+            margin-top: 18px;
+
+            color: #666;
+
+            font-size: 14px;
+        }
+
+
+        .auth-switch button {
+            border: none;
+
+            background: none;
+
+            color: #075e54;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        .auth-error {
+            display: none;
+
+            background: #ffe5e5;
+
+            color: #b00020;
+
+            padding: 10px;
+
+            border-radius: 8px;
+
+            margin-bottom: 14px;
+
+            font-size: 13px;
+        }
+
+
+        .auth-success {
+            display: none;
+
+            background: #e3f7e9;
+
+            color: #176b2c;
+
+            padding: 10px;
+
+            border-radius: 8px;
+
+            margin-bottom: 14px;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================
            HEADER
         ========================= */
 
         .header {
-
             height: 65px;
             min-height: 65px;
 
@@ -76,17 +264,17 @@
 
 
         .header-left {
-
             display: flex;
 
             align-items: center;
 
-            gap: 10px;
+            gap: 8px;
+
+            min-width: 0;
         }
 
 
         .back-button {
-
             width: 40px;
             height: 40px;
 
@@ -109,15 +297,13 @@
 
 
         .logo {
-
-            font-size: 22px;
+            font-size: 21px;
 
             font-weight: bold;
         }
 
 
         .status {
-
             font-size: 12px;
 
             opacity: 0.85;
@@ -127,7 +313,6 @@
 
 
         .menu-button {
-
             width: 40px;
             height: 40px;
 
@@ -148,14 +333,13 @@
         ========================= */
 
         .menu {
-
             position: absolute;
 
             top: 60px;
 
             right: 10px;
 
-            width: 200px;
+            width: 210px;
 
             background: white;
 
@@ -173,7 +357,6 @@
 
 
         .menu button {
-
             width: 100%;
 
             border: none;
@@ -191,7 +374,6 @@
 
 
         .menu button:hover {
-
             background: #f1f1f1;
         }
 
@@ -201,7 +383,6 @@
         ========================= */
 
         .contacts-page {
-
             flex: 1;
 
             min-height: 0;
@@ -210,16 +391,13 @@
 
             flex-direction: column;
 
-            background: #ffffff;
+            background: white;
 
             overflow: hidden;
         }
 
 
-        /* RECHERCHE */
-
         .search-area {
-
             padding: 10px;
 
             background: #f0f2f5;
@@ -231,7 +409,6 @@
 
 
         .search-box {
-
             width: 100%;
 
             height: 45px;
@@ -250,10 +427,7 @@
         }
 
 
-        /* LISTE */
-
         .contact-list {
-
             flex: 1;
 
             min-height: 0;
@@ -265,7 +439,6 @@
 
 
         .contact {
-
             width: 100%;
 
             min-height: 75px;
@@ -289,13 +462,11 @@
 
 
         .contact:hover {
-
             background: #f5f5f5;
         }
 
 
         .avatar {
-
             width: 52px;
             height: 52px;
 
@@ -322,7 +493,6 @@
 
 
         .contact-info {
-
             flex: 1;
 
             min-width: 0;
@@ -330,7 +500,6 @@
 
 
         .contact-name {
-
             font-size: 16px;
 
             font-weight: bold;
@@ -342,39 +511,28 @@
 
 
         .last-message {
-
-            font-size: 14px;
+            font-size: 13px;
 
             color: #777;
-
-            white-space: nowrap;
-
-            overflow: hidden;
-
-            text-overflow: ellipsis;
         }
 
 
-        .contact-time {
+        .empty-contacts {
+            padding: 40px 20px;
 
-            font-size: 11px;
+            text-align: center;
 
-            color: #888;
+            color: #777;
 
-            margin-left: 8px;
-
-            align-self: flex-start;
-
-            margin-top: 5px;
+            font-size: 15px;
         }
 
 
         /* =========================
-           BOUTON NOUVELLE CONVERSATION
+           BOUTON +
         ========================= */
 
         .new-chat-button {
-
             position: fixed;
 
             right: 20px;
@@ -404,18 +562,11 @@
         }
 
 
-        .new-chat-button:active {
-
-            transform: scale(0.95);
-        }
-
-
         /* =========================
-           PAGE CONVERSATION
+           CONVERSATION
         ========================= */
 
         .conversation-page {
-
             flex: 1;
 
             min-height: 0;
@@ -428,12 +579,7 @@
         }
 
 
-        /* =========================
-           ZONE DES MESSAGES
-        ========================= */
-
         .chat {
-
             flex: 1;
 
             min-height: 0;
@@ -451,7 +597,6 @@
 
 
         .welcome {
-
             text-align: center;
 
             margin-top: 30px;
@@ -461,15 +606,15 @@
 
 
         .welcome h2 {
-
             margin-bottom: 8px;
 
             color: #075e54;
+
+            font-size: 20px;
         }
 
 
         .message {
-
             margin: 10px 0;
 
             padding: 10px 13px;
@@ -485,7 +630,6 @@
 
 
         .user-message {
-
             background: #d9fdd3;
 
             margin-left: auto;
@@ -493,7 +637,6 @@
 
 
         .contact-message {
-
             background: white;
 
             margin-right: auto;
@@ -501,7 +644,6 @@
 
 
         .time {
-
             display: block;
 
             font-size: 10px;
@@ -514,12 +656,7 @@
         }
 
 
-        /* =========================
-           BARRE D'ENVOI
-        ========================= */
-
         .input-area {
-
             width: 100%;
 
             height: 72px;
@@ -543,7 +680,6 @@
 
 
         .message-input {
-
             flex: 1;
 
             min-width: 0;
@@ -565,7 +701,6 @@
 
 
         .send-button {
-
             width: 50px;
 
             min-width: 50px;
@@ -592,20 +727,40 @@
         }
 
 
-        .send-button:active {
+        /* =========================
+           CHARGEMENT
+        ========================= */
 
-            transform: scale(0.95);
+        .loading {
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(255,255,255,0.95);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            z-index: 500;
+
+            font-size: 17px;
+
+            color: #075e54;
+
+            font-weight: bold;
         }
 
 
         /* =========================
-           RESPONSIVE MOBILE
+           MOBILE
         ========================= */
 
         @media (max-width: 400px) {
 
             .header {
-
                 height: 60px;
 
                 min-height: 60px;
@@ -615,19 +770,11 @@
 
 
             .logo {
-
                 font-size: 19px;
             }
 
 
-            .status {
-
-                font-size: 11px;
-            }
-
-
             .contact {
-
                 min-height: 72px;
 
                 padding: 9px 12px;
@@ -635,31 +782,15 @@
 
 
             .avatar {
-
                 width: 48px;
 
                 height: 48px;
 
                 min-width: 48px;
-
-                font-size: 18px;
-            }
-
-
-            .contact-name {
-
-                font-size: 15px;
-            }
-
-
-            .last-message {
-
-                font-size: 13px;
             }
 
 
             .input-area {
-
                 height: 72px;
 
                 min-height: 72px;
@@ -668,30 +799,12 @@
             }
 
 
-            .message-input {
-
-                height: 50px;
-
-                font-size: 14px;
-            }
-
-
-            .send-button {
-
-                width: 48px;
-
-                min-width: 48px;
-
-                height: 48px;
-            }
-
-
             .new-chat-button {
-
                 right: 15px;
 
                 bottom: 15px;
             }
+
         }
 
     </style>
@@ -706,10 +819,180 @@
 
 
     <!-- =========================
+         CHARGEMENT
+    ========================= -->
+
+    <div
+        class="loading"
+        id="loading"
+    >
+        Chargement de Messie Chat...
+    </div>
+
+
+    <!-- =========================
+         AUTHENTIFICATION
+    ========================= -->
+
+    <section
+        class="auth-page"
+        id="authPage"
+        style="display:none;"
+    >
+
+        <div class="auth-card">
+
+            <div class="auth-logo">
+                Messie Chat
+            </div>
+
+            <div class="auth-subtitle">
+                Messagerie simple et moderne
+            </div>
+
+
+            <!-- MESSAGE ERREUR -->
+
+            <div
+                class="auth-error"
+                id="authError"
+            ></div>
+
+
+            <!-- MESSAGE SUCCÈS -->
+
+            <div
+                class="auth-success"
+                id="authSuccess"
+            ></div>
+
+
+            <!-- =====================
+                 CONNEXION
+            ====================== -->
+
+            <div id="loginForm">
+
+                <h2 class="auth-title">
+                    Se connecter
+                </h2>
+
+
+                <input
+                    class="auth-input"
+                    id="loginEmail"
+                    type="email"
+                    placeholder="Adresse e-mail"
+                    autocomplete="email"
+                >
+
+
+                <input
+                    class="auth-input"
+                    id="loginPassword"
+                    type="password"
+                    placeholder="Mot de passe"
+                    autocomplete="current-password"
+                >
+
+
+                <button
+                    class="primary-button"
+                    onclick="login()"
+                >
+                    Se connecter
+                </button>
+
+
+                <div class="auth-switch">
+
+                    Pas encore de compte ?
+
+                    <button onclick="showSignup()">
+                        Créer un compte
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================
+                 INSCRIPTION
+            ====================== -->
+
+            <div
+                id="signupForm"
+                style="display:none;"
+            >
+
+                <h2 class="auth-title">
+                    Créer un compte
+                </h2>
+
+
+                <input
+                    class="auth-input"
+                    id="signupUsername"
+                    type="text"
+                    placeholder="Nom d'utilisateur"
+                    autocomplete="username"
+                    maxlength="30"
+                >
+
+
+                <input
+                    class="auth-input"
+                    id="signupEmail"
+                    type="email"
+                    placeholder="Adresse e-mail"
+                    autocomplete="email"
+                >
+
+
+                <input
+                    class="auth-input"
+                    id="signupPassword"
+                    type="password"
+                    placeholder="Mot de passe"
+                    autocomplete="new-password"
+                >
+
+
+                <button
+                    class="primary-button"
+                    onclick="signup()"
+                >
+                    Créer mon compte
+                </button>
+
+
+                <div class="auth-switch">
+
+                    J'ai déjà un compte
+
+                    <button onclick="showLogin()">
+                        Se connecter
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
          HEADER
     ========================= -->
 
-    <header class="header">
+    <header
+        class="header"
+        id="mainHeader"
+        style="display:none;"
+    >
 
         <div class="header-left">
 
@@ -763,38 +1046,27 @@
         id="menu"
     >
 
-        <button onclick="newConversation()">
-            💬 Nouvelle conversation
-        </button>
-
-
-        <button
-            onclick="alert('Le profil sera disponible bientôt.')"
-        >
+        <button onclick="showMyProfile()">
             👤 Mon profil
         </button>
 
 
-        <button
-            onclick="alert('Les paramètres seront disponibles bientôt.')"
-        >
-            ⚙️ Paramètres
+        <button onclick="logout()">
+            🚪 Se déconnecter
         </button>
 
     </div>
 
 
     <!-- =========================
-         PAGE CONTACTS
+         CONTACTS
     ========================= -->
 
     <section
         class="contacts-page"
         id="contactsPage"
+        style="display:none;"
     >
-
-
-        <!-- RECHERCHE -->
 
         <div class="search-area">
 
@@ -802,171 +1074,31 @@
                 type="text"
                 class="search-box"
                 id="searchInput"
-                placeholder="🔍 Rechercher..."
+                placeholder="🔍 Rechercher un utilisateur..."
                 oninput="searchContacts()"
             >
 
         </div>
 
 
-        <!-- LISTE DES CONTACTS -->
-
         <div
             class="contact-list"
             id="contactList"
-        >
+        ></div>
 
-
-            <!-- JEAN -->
-
-            <button
-                class="contact"
-                data-name="Jean"
-                onclick="openConversation('Jean')"
-            >
-
-                <div class="avatar">
-                    J
-                </div>
-
-
-                <div class="contact-info">
-
-                    <div class="contact-name">
-                        Jean
-                    </div>
-
-                    <div class="last-message">
-                        Salut, ça va ?
-                    </div>
-
-                </div>
-
-
-                <div class="contact-time">
-                    20:15
-                </div>
-
-            </button>
-
-
-            <!-- MARIE -->
-
-            <button
-                class="contact"
-                data-name="Marie"
-                onclick="openConversation('Marie')"
-            >
-
-                <div class="avatar">
-                    M
-                </div>
-
-
-                <div class="contact-info">
-
-                    <div class="contact-name">
-                        Marie
-                    </div>
-
-                    <div class="last-message">
-                        À demain !
-                    </div>
-
-                </div>
-
-
-                <div class="contact-time">
-                    19:42
-                </div>
-
-            </button>
-
-
-            <!-- PAUL -->
-
-            <button
-                class="contact"
-                data-name="Paul"
-                onclick="openConversation('Paul')"
-            >
-
-                <div class="avatar">
-                    P
-                </div>
-
-
-                <div class="contact-info">
-
-                    <div class="contact-name">
-                        Paul
-                    </div>
-
-                    <div class="last-message">
-                        D'accord 👍
-                    </div>
-
-                </div>
-
-
-                <div class="contact-time">
-                    18:30
-                </div>
-
-            </button>
-
-
-            <!-- SARAH -->
-
-            <button
-                class="contact"
-                data-name="Sarah"
-                onclick="openConversation('Sarah')"
-            >
-
-                <div class="avatar">
-                    S
-                </div>
-
-
-                <div class="contact-info">
-
-                    <div class="contact-name">
-                        Sarah
-                    </div>
-
-                    <div class="last-message">
-                        Bonjour
-                    </div>
-
-                </div>
-
-
-                <div class="contact-time">
-                    17:05
-                </div>
-
-            </button>
-
-
-        </div>
-
-
-        <!-- NOUVELLE CONVERSATION -->
 
         <button
             class="new-chat-button"
-            onclick="newConversation()"
+            onclick="loadProfiles()"
         >
-            +
+            ↻
         </button>
-
 
     </section>
 
 
     <!-- =========================
-         PAGE CONVERSATION
+         CONVERSATION
     ========================= -->
 
     <section
@@ -974,18 +1106,11 @@
         id="conversationPage"
     >
 
-
-        <!-- MESSAGES -->
-
         <main
             class="chat"
             id="chat"
-        >
+        ></main>
 
-        </main>
-
-
-        <!-- ENVOI -->
 
         <div class="input-area">
 
@@ -1016,10 +1141,54 @@
 
 <script>
 
+    /* =====================================================
+       CONFIGURATION SUPABASE
+    ===================================================== */
 
-    /* =========================
+    const SUPABASE_URL =
+        "https://dulaaqomngjaheuytltd.supabase.co";
+
+
+    /*
+       IMPORTANT :
+
+       Remplace uniquement la valeur ci-dessous
+       par TA Publishable Key.
+
+       Ne change pas l'URL ci-dessus.
+    */
+
+    const SUPABASE_PUBLISHABLE_KEY =
+        "COLLE_TA_PUBLISHABLE_KEY_ICI";
+
+
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY
+        );
+
+
+    /* =====================================================
        VARIABLES
-    ========================= */
+    ===================================================== */
+
+    let currentUser = null;
+
+    let currentContact = null;
+
+
+    const loading =
+        document.getElementById("loading");
+
+
+    const authPage =
+        document.getElementById("authPage");
+
+
+    const mainHeader =
+        document.getElementById("mainHeader");
+
 
     const contactsPage =
         document.getElementById("contactsPage");
@@ -1027,6 +1196,10 @@
 
     const conversationPage =
         document.getElementById("conversationPage");
+
+
+    const contactList =
+        document.getElementById("contactList");
 
 
     const chat =
@@ -1037,32 +1210,735 @@
         document.getElementById("messageInput");
 
 
+    const authError =
+        document.getElementById("authError");
+
+
+    const authSuccess =
+        document.getElementById("authSuccess");
+
+
     const menu =
         document.getElementById("menu");
 
 
-    const backButton =
-        document.getElementById("backButton");
+    /* =====================================================
+       INITIALISATION
+    ===================================================== */
+
+    async function initializeApp() {
+
+        try {
+
+            const {
+                data: {
+                    session
+                }
+            } =
+                await supabaseClient.auth.getSession();
 
 
-    const headerTitle =
-        document.getElementById("headerTitle");
+            if (session && session.user) {
+
+                currentUser =
+                    session.user;
+
+                await showMainApp();
+
+            } else {
+
+                showAuthentication();
+
+            }
 
 
-    const headerStatus =
-        document.getElementById("headerStatus");
+        } catch (error) {
+
+            console.error(error);
+
+            showAuthentication();
+
+        }
+
+    }
 
 
-    let currentContact = "";
+    /* =====================================================
+       CHANGEMENT DE SESSION
+    ===================================================== */
+
+    supabaseClient.auth.onAuthStateChange(
+        async function(event, session) {
+
+            if (session && session.user) {
+
+                currentUser =
+                    session.user;
+
+                await showMainApp();
+
+            } else {
+
+                currentUser = null;
+
+                showAuthentication();
+
+            }
+
+        }
+    );
 
 
-    /* =========================
-       OUVRIR UNE CONVERSATION
-    ========================= */
+    /* =====================================================
+       AFFICHER AUTHENTIFICATION
+    ===================================================== */
 
-    function openConversation(name) {
+    function showAuthentication() {
 
-        currentContact = name;
+        loading.style.display =
+            "none";
+
+        authPage.style.display =
+            "flex";
+
+        mainHeader.style.display =
+            "none";
+
+        contactsPage.style.display =
+            "none";
+
+        conversationPage.style.display =
+            "none";
+
+    }
+
+
+    /* =====================================================
+       AFFICHER APPLICATION
+    ===================================================== */
+
+    async function showMainApp() {
+
+        loading.style.display =
+            "none";
+
+        authPage.style.display =
+            "none";
+
+        mainHeader.style.display =
+            "flex";
+
+        contactsPage.style.display =
+            "flex";
+
+        conversationPage.style.display =
+            "none";
+
+
+        document.getElementById(
+            "backButton"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "headerTitle"
+        ).textContent =
+            "Messie Chat";
+
+
+        document.getElementById(
+            "headerStatus"
+        ).textContent =
+            "🟢 En ligne";
+
+
+        await loadProfiles();
+
+    }
+
+
+    /* =====================================================
+       FORMULAIRE CONNEXION
+    ===================================================== */
+
+    function showLogin() {
+
+        document.getElementById(
+            "loginForm"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "signupForm"
+        ).style.display =
+            "none";
+
+
+        clearAuthMessages();
+
+    }
+
+
+    /* =====================================================
+       FORMULAIRE INSCRIPTION
+    ===================================================== */
+
+    function showSignup() {
+
+        document.getElementById(
+            "loginForm"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "signupForm"
+        ).style.display =
+            "block";
+
+
+        clearAuthMessages();
+
+    }
+
+
+    /* =====================================================
+       EFFACER MESSAGES AUTH
+    ===================================================== */
+
+    function clearAuthMessages() {
+
+        authError.style.display =
+            "none";
+
+        authSuccess.style.display =
+            "none";
+
+        authError.textContent =
+            "";
+
+        authSuccess.textContent =
+            "";
+
+    }
+
+
+    /* =====================================================
+       AFFICHER ERREUR
+    ===================================================== */
+
+    function showError(message) {
+
+        authSuccess.style.display =
+            "none";
+
+
+        authError.textContent =
+            message;
+
+
+        authError.style.display =
+            "block";
+
+    }
+
+
+    /* =====================================================
+       AFFICHER SUCCÈS
+    ===================================================== */
+
+    function showSuccess(message) {
+
+        authError.style.display =
+            "none";
+
+
+        authSuccess.textContent =
+            message;
+
+
+        authSuccess.style.display =
+            "block";
+
+    }
+
+
+    /* =====================================================
+       INSCRIPTION
+    ===================================================== */
+
+    async function signup() {
+
+        clearAuthMessages();
+
+
+        const username =
+            document
+                .getElementById("signupUsername")
+                .value
+                .trim();
+
+
+        const email =
+            document
+                .getElementById("signupEmail")
+                .value
+                .trim();
+
+
+        const password =
+            document
+                .getElementById("signupPassword")
+                .value;
+
+
+        if (!username) {
+
+            showError(
+                "Entre un nom d'utilisateur."
+            );
+
+            return;
+
+        }
+
+
+        if (username.length < 3) {
+
+            showError(
+                "Le nom d'utilisateur doit avoir au moins 3 caractères."
+            );
+
+            return;
+
+        }
+
+
+        if (!email) {
+
+            showError(
+                "Entre ton adresse e-mail."
+            );
+
+            return;
+
+        }
+
+
+        if (password.length < 6) {
+
+            showError(
+                "Le mot de passe doit contenir au moins 6 caractères."
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.auth.signUp({
+
+                    email: email,
+
+                    password: password,
+
+                    options: {
+
+                        data: {
+
+                            username:
+                                username
+
+                        }
+
+                    }
+
+                });
+
+
+            if (error) {
+
+                showError(
+                    translateAuthError(
+                        error.message
+                    )
+                );
+
+                return;
+
+            }
+
+
+            /*
+               Avec Confirm email désactivé,
+               Supabase connectera normalement
+               directement l'utilisateur.
+            */
+
+            if (
+                data.session &&
+                data.user
+            ) {
+
+                showSuccess(
+                    "Compte créé avec succès !"
+                );
+
+            } else {
+
+                showSuccess(
+                    "Compte créé. Tu peux maintenant te connecter."
+                );
+
+                showLogin();
+
+            }
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            showError(
+                "Impossible de créer le compte."
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       CONNEXION
+    ===================================================== */
+
+    async function login() {
+
+        clearAuthMessages();
+
+
+        const email =
+            document
+                .getElementById("loginEmail")
+                .value
+                .trim();
+
+
+        const password =
+            document
+                .getElementById("loginPassword")
+                .value;
+
+
+        if (!email || !password) {
+
+            showError(
+                "Entre ton e-mail et ton mot de passe."
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.auth.signInWithPassword({
+
+                    email:
+                        email,
+
+                    password:
+                        password
+
+                });
+
+
+            if (error) {
+
+                showError(
+                    translateAuthError(
+                        error.message
+                    )
+                );
+
+                return;
+
+            }
+
+
+            currentUser =
+                data.user;
+
+
+            await showMainApp();
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            showError(
+                "Impossible de se connecter."
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       DÉCONNEXION
+    ===================================================== */
+
+    async function logout() {
+
+        menu.style.display =
+            "none";
+
+
+        const {
+            error
+        } =
+            await supabaseClient.auth.signOut();
+
+
+        if (error) {
+
+            alert(
+                "Erreur lors de la déconnexion."
+            );
+
+            return;
+
+        }
+
+
+        currentUser = null;
+
+    }
+
+
+    /* =====================================================
+       CHARGER LES VRAIS UTILISATEURS
+    ===================================================== */
+
+    async function loadProfiles() {
+
+        contactList.innerHTML =
+            `
+            <div class="empty-contacts">
+                Chargement des utilisateurs...
+            </div>
+            `;
+
+
+        try {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("profiles")
+                    .select("id, username, created_at")
+                    .order("username", {
+                        ascending: true
+                    });
+
+
+            if (error) {
+
+                console.error(error);
+
+                contactList.innerHTML =
+                    `
+                    <div class="empty-contacts">
+                        Impossible de charger les utilisateurs.
+                    </div>
+                    `;
+
+                return;
+
+            }
+
+
+            const otherUsers =
+                data.filter(function(profile) {
+
+                    return (
+                        !currentUser ||
+                        profile.id !== currentUser.id
+                    );
+
+                });
+
+
+            if (otherUsers.length === 0) {
+
+                contactList.innerHTML =
+                    `
+                    <div class="empty-contacts">
+                        Aucun autre utilisateur pour le moment.<br><br>
+                        Demande à quelqu'un de créer un compte sur Messie Chat.
+                    </div>
+                    `;
+
+                return;
+
+            }
+
+
+            contactList.innerHTML = "";
+
+
+            otherUsers.forEach(
+                function(profile) {
+
+                    const button =
+                        document.createElement(
+                            "button"
+                        );
+
+
+                    button.className =
+                        "contact";
+
+
+                    button.dataset.name =
+                        profile.username;
+
+
+                    button.onclick =
+                        function() {
+
+                            openConversation(
+                                profile
+                            );
+
+                        };
+
+
+                    const firstLetter =
+                        profile.username
+                            .charAt(0)
+                            .toUpperCase();
+
+
+                    button.innerHTML = `
+
+                        <div class="avatar">
+                            ${escapeHTML(firstLetter)}
+                        </div>
+
+                        <div class="contact-info">
+
+                            <div class="contact-name">
+                                ${escapeHTML(profile.username)}
+                            </div>
+
+                            <div class="last-message">
+                                Appuyer pour ouvrir la conversation
+                            </div>
+
+                        </div>
+
+                    `;
+
+
+                    contactList.appendChild(
+                        button
+                    );
+
+                }
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            contactList.innerHTML =
+                `
+                <div class="empty-contacts">
+                    Une erreur est survenue.
+                </div>
+                `;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       RECHERCHE
+    ===================================================== */
+
+    function searchContacts() {
+
+        const search =
+            document
+                .getElementById("searchInput")
+                .value
+                .toLowerCase()
+                .trim();
+
+
+        const contacts =
+            document.querySelectorAll(
+                ".contact"
+            );
+
+
+        contacts.forEach(
+            function(contact) {
+
+                const name =
+                    (
+                        contact.dataset.name
+                        || ""
+                    ).toLowerCase();
+
+
+                if (
+                    name.includes(search)
+                ) {
+
+                    contact.style.display =
+                        "flex";
+
+                } else {
+
+                    contact.style.display =
+                        "none";
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       OUVRIR CONVERSATION
+    ===================================================== */
+
+    function openConversation(profile) {
+
+        currentContact =
+            profile;
 
 
         contactsPage.style.display =
@@ -1073,16 +1949,22 @@
             "flex";
 
 
-        backButton.style.display =
+        document.getElementById(
+            "backButton"
+        ).style.display =
             "flex";
 
 
-        headerTitle.textContent =
-            name;
+        document.getElementById(
+            "headerTitle"
+        ).textContent =
+            profile.username;
 
 
-        headerStatus.textContent =
-            "🟢 En ligne";
+        document.getElementById(
+            "headerStatus"
+        ).textContent =
+            "Utilisateur Messie Chat";
 
 
         menu.style.display =
@@ -1094,11 +1976,15 @@
             <div class="welcome">
 
                 <h2>
-                    Conversation avec ${escapeHTML(name)}
+                    ${escapeHTML(profile.username)}
                 </h2>
 
                 <p>
-                    Commencez à discuter 👋
+                    Cette conversation est prête 👋
+                </p>
+
+                <p style="margin-top:10px;font-size:13px;">
+                    Les messages réels seront activés à l'étape suivante.
                 </p>
 
             </div>
@@ -1108,12 +1994,14 @@
 
         messageInput.value = "";
 
+        messageInput.focus();
+
     }
 
 
-    /* =========================
-       RETOUR AUX CONTACTS
-    ========================= */
+    /* =====================================================
+       RETOUR CONTACTS
+    ===================================================== */
 
     function showContacts() {
 
@@ -1125,26 +2013,33 @@
             "flex";
 
 
-        backButton.style.display =
+        document.getElementById(
+            "backButton"
+        ).style.display =
             "none";
 
 
-        headerTitle.textContent =
+        document.getElementById(
+            "headerTitle"
+        ).textContent =
             "Messie Chat";
 
 
-        headerStatus.textContent =
+        document.getElementById(
+            "headerStatus"
+        ).textContent =
             "🟢 En ligne";
 
 
-        messageInput.value = "";
+        currentContact =
+            null;
 
     }
 
 
-    /* =========================
-       ENVOYER UN MESSAGE
-    ========================= */
+    /* =====================================================
+       ENVOI TEMPORAIRE
+    ===================================================== */
 
     function sendMessage() {
 
@@ -1152,11 +2047,22 @@
             messageInput.value.trim();
 
 
-        if (text === "") {
+        if (!text) {
 
             return;
 
         }
+
+
+        /*
+           IMPORTANT :
+
+           Pour le moment, les messages ne sont
+           pas encore enregistrés dans Supabase.
+
+           Cette fonction sera remplacée à l'étape
+           suivante par le vrai système de messages.
+        */
 
 
         const welcome =
@@ -1173,7 +2079,9 @@
 
 
         const message =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
 
         message.className =
@@ -1207,30 +2115,32 @@
         `;
 
 
-        chat.appendChild(message);
+        chat.appendChild(
+            message
+        );
 
 
-        messageInput.value = "";
+        messageInput.value =
+            "";
 
 
         chat.scrollTop =
             chat.scrollHeight;
 
-
-        messageInput.focus();
-
     }
 
 
-    /* =========================
+    /* =====================================================
        TOUCHE ENTRÉE
-    ========================= */
+    ===================================================== */
 
     messageInput.addEventListener(
         "keydown",
         function(event) {
 
-            if (event.key === "Enter") {
+            if (
+                event.key === "Enter"
+            ) {
 
                 event.preventDefault();
 
@@ -1242,56 +2152,9 @@
     );
 
 
-    /* =========================
-       RECHERCHE CONTACTS
-    ========================= */
-
-    function searchContacts() {
-
-        const search =
-            document
-                .getElementById("searchInput")
-                .value
-                .toLowerCase()
-                .trim();
-
-
-        const contacts =
-            document.querySelectorAll(
-                ".contact"
-            );
-
-
-        contacts.forEach(function(contact) {
-
-            const name =
-                contact
-                    .getAttribute("data-name")
-                    .toLowerCase();
-
-
-            if (
-                name.includes(search)
-            ) {
-
-                contact.style.display =
-                    "flex";
-
-            } else {
-
-                contact.style.display =
-                    "none";
-
-            }
-
-        });
-
-    }
-
-
-    /* =========================
+    /* =====================================================
        MENU
-    ========================= */
+    ===================================================== */
 
     function toggleMenu() {
 
@@ -1312,35 +2175,118 @@
     }
 
 
-    /* =========================
-       NOUVELLE CONVERSATION
-    ========================= */
+    /* =====================================================
+       PROFIL
+    ===================================================== */
 
-    function newConversation() {
+    function showMyProfile() {
 
         menu.style.display =
             "none";
 
 
+        if (!currentUser) {
+
+            return;
+
+        }
+
+
+        const username =
+            currentUser
+                .user_metadata
+                ?.username
+            ||
+            currentUser.email
+                ?.split("@")[0]
+            ||
+            "Utilisateur";
+
+
         alert(
-            "La recherche de nouveaux contacts sera ajoutée prochainement."
+            "Ton profil\n\n" +
+            "Nom : " +
+            username +
+            "\n\nE-mail : " +
+            currentUser.email
         );
 
     }
 
 
-    /* =========================
-       PROTECTION HTML
-    ========================= */
+    /* =====================================================
+       TRADUCTION ERREURS SUPABASE
+    ===================================================== */
+
+    function translateAuthError(message) {
+
+        const text =
+            message.toLowerCase();
+
+
+        if (
+            text.includes(
+                "invalid login credentials"
+            )
+        ) {
+
+            return "E-mail ou mot de passe incorrect.";
+
+        }
+
+
+        if (
+            text.includes(
+                "user already registered"
+            )
+        ) {
+
+            return "Cette adresse e-mail possède déjà un compte.";
+
+        }
+
+
+        if (
+            text.includes(
+                "password should be at least"
+            )
+        ) {
+
+            return "Le mot de passe est trop court.";
+
+        }
+
+
+        if (
+            text.includes(
+                "rate limit"
+            )
+        ) {
+
+            return "Trop de tentatives. Réessaie plus tard.";
+
+        }
+
+
+        return message;
+
+    }
+
+
+    /* =====================================================
+       PROTECTION CONTRE HTML
+    ===================================================== */
 
     function escapeHTML(text) {
 
         const div =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
 
         div.textContent =
-            text;
+            text || "";
 
 
         return div.innerHTML;
@@ -1348,9 +2294,9 @@
     }
 
 
-    /* =========================
-       FERMER LE MENU
-    ========================= */
+    /* =====================================================
+       FERMER MENU EN CLIQUANT AILLEURS
+    ===================================================== */
 
     document.addEventListener(
         "click",
@@ -1363,6 +2309,8 @@
 
 
             if (
+                menu.style.display === "block"
+                &&
                 !menu.contains(event.target)
                 &&
                 !menuButton.contains(event.target)
@@ -1377,9 +2325,15 @@
     );
 
 
+    /* =====================================================
+       DÉMARRAGE
+    ===================================================== */
+
+    initializeApp();
+
 </script>
 
 
 </body>
 
-</html>
+        </html>
