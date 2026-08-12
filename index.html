@@ -3,33 +3,318 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Messie Chat</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f3f6;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .app {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+
+        /* HEADER */
+
+        .header {
+            height: 65px;
+            background: #075e54;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .status {
+            font-size: 12px;
+            opacity: 0.85;
+        }
+
+        /* CHAT */
+
+        .chat {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #efeae2;
+        }
+
+        .welcome {
+            text-align: center;
+            margin-top: 30px;
+            color: #555;
+        }
+
+        .welcome h2 {
+            margin-bottom: 8px;
+            color: #075e54;
+        }
+
+        .message {
+            margin: 10px 0;
+            padding: 10px 13px;
+            border-radius: 12px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            background: #d9fdd3;
+            margin-left: auto;
+        }
+
+        .bot-message {
+            background: white;
+            margin-right: auto;
+        }
+
+        .time {
+            display: block;
+            font-size: 10px;
+            color: #777;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        /* INPUT */
+
+        .input-area {
+            min-height: 65px;
+            padding: 10px;
+            display: flex;
+            gap: 8px;
+            background: #f0f2f5;
+            border-top: 1px solid #ddd;
+        }
+
+        .input-area input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 13px;
+            border-radius: 25px;
+            font-size: 15px;
+            background: white;
+        }
+
+        .send-button {
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 50%;
+            background: #075e54;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .send-button:active {
+            transform: scale(0.95);
+        }
+
+        /* MENU */
+
+        .menu-button {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        .menu {
+            position: absolute;
+            top: 60px;
+            right: 10px;
+            background: white;
+            width: 180px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: none;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .menu button {
+            width: 100%;
+            border: none;
+            background: white;
+            padding: 15px;
+            text-align: left;
+            font-size: 15px;
+        }
+
+        .menu button:hover {
+            background: #f1f1f1;
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>Messie Chat</h1>
+<div class="app">
 
-    <p>Bienvenue sur Messie Chat 👋</p>
+    <header class="header">
 
-    <input type="text" placeholder="Écris un message..." id="message">
-    <button onclick="envoyerMessage()">Envoyer</button>
+        <div>
+            <div class="logo">Messie Chat</div>
+            <div class="status">En ligne</div>
+        </div>
 
-    <div id="messages"></div>
+        <button class="menu-button" onclick="toggleMenu()">⋮</button>
 
-    <script>
-        function envoyerMessage() {
-            const input = document.getElementById("message");
-            const messages = document.getElementById("messages");
+    </header>
 
-            if (input.value.trim() !== "") {
-                const message = document.createElement("p");
-                message.textContent = "Vous : " + input.value;
-                messages.appendChild(message);
+    <div class="menu" id="menu">
+        <button onclick="nouvelleConversation()">💬 Nouvelle conversation</button>
+        <button onclick="alert('Le profil sera disponible bientôt.')">
+            👤 Mon profil
+        </button>
+        <button onclick="alert('Les paramètres arrivent bientôt.')">
+            ⚙️ Paramètres
+        </button>
+    </div>
 
-                input.value = "";
-            }
+    <main class="chat" id="chat">
+
+        <div class="welcome">
+            <h2>Bienvenue 👋</h2>
+            <p>Bienvenue sur Messie Chat.</p>
+            <p>Commence une conversation.</p>
+        </div>
+
+    </main>
+
+    <div class="input-area">
+
+        <input
+            type="text"
+            id="messageInput"
+            placeholder="Écris un message..."
+            autocomplete="off"
+        >
+
+        <button class="send-button" onclick="sendMessage()">
+            ➤
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+    const input = document.getElementById("messageInput");
+    const chat = document.getElementById("chat");
+    const menu = document.getElementById("menu");
+
+    /* ENVOYER UN MESSAGE */
+
+    function sendMessage() {
+
+        const text = input.value.trim();
+
+        if (text === "") {
+            return;
         }
-    </script>
+
+        const welcome = document.querySelector(".welcome");
+
+        if (welcome) {
+            welcome.remove();
+        }
+
+        const message = document.createElement("div");
+
+        message.className = "message user-message";
+
+        const now = new Date();
+
+        const time =
+            now.getHours().toString().padStart(2, "0")
+            + ":"
+            + now.getMinutes().toString().padStart(2, "0");
+
+        message.innerHTML = `
+            ${escapeHTML(text)}
+            <span class="time">${time}</span>
+        `;
+
+        chat.appendChild(message);
+
+        input.value = "";
+
+        chat.scrollTop = chat.scrollHeight;
+    }
+
+    /* ENTRÉE CLAVIER */
+
+    input.addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+            sendMessage();
+        }
+
+    });
+
+    /* MENU */
+
+    function toggleMenu() {
+
+        if (menu.style.display === "block") {
+            menu.style.display = "none";
+        } else {
+            menu.style.display = "block";
+        }
+
+    }
+
+    /* NOUVELLE CONVERSATION */
+
+    function nouvelleConversation() {
+
+        chat.innerHTML = `
+            <div class="welcome">
+                <h2>Nouvelle conversation 💬</h2>
+                <p>Écris ton premier message.</p>
+            </div>
+        `;
+
+        menu.style.display = "none";
+    }
+
+    /* PROTECTION HTML */
+
+    function escapeHTML(text) {
+
+        const div = document.createElement("div");
+
+        div.textContent = text;
+
+        return div.innerHTML;
+    }
+
+</script>
 
 </body>
 </html>
