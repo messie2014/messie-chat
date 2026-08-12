@@ -2336,6 +2336,70 @@ async function loadMessages() {
             chat.scrollHeight;
 
     }
+    /* =====================================================
+   AFFICHER UN MESSAGE
+===================================================== */
+
+function displayMessage(message) {
+
+    if (!message) {
+        return;
+    }
+
+
+    const messageElement =
+        document.createElement("div");
+
+
+    if (
+        message.sender_id === currentUser.id
+    ) {
+
+        messageElement.className =
+            "message user-message";
+
+    } else {
+
+        messageElement.className =
+            "message contact-message";
+
+    }
+
+
+    const date =
+        new Date(
+            message.created_at
+        );
+
+
+    const time =
+        date.getHours()
+            .toString()
+            .padStart(2, "0")
+        +
+        ":"
+        +
+        date.getMinutes()
+            .toString()
+            .padStart(2, "0");
+
+
+    messageElement.innerHTML = `
+
+        ${escapeHTML(message.content)}
+
+        <span class="time">
+            ${time}
+        </span>
+
+    `;
+
+
+    chat.appendChild(
+        messageElement
+    );
+
+}
 
 
     /* =====================================================
