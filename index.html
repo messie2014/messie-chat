@@ -1934,74 +1934,45 @@
     /* =====================================================
        OUVRIR CONVERSATION
     ===================================================== */
-
-    async function openConversation(profile) {
+async function openConversation(profile) {
 
     currentContact =
         profile;
 
-
     contactsPage.style.display =
         "none";
 
-
     conversationPage.style.display =
         "flex";
-
 
     document.getElementById(
         "backButton"
     ).style.display =
         "flex";
 
-
     document.getElementById(
         "headerTitle"
     ).textContent =
         profile.username;
-
 
     document.getElementById(
         "headerStatus"
     ).textContent =
         "Utilisateur Messie Chat";
 
-
     menu.style.display =
         "none";
 
 
-    chat.innerHTML = `
-
-        <div class="welcome">
-
-            <h2>
-                ${escapeHTML(profile.username)}
-            </h2>
-
-            <p>
-                Chargement des messages...
-            </p>
-
-        </div>
-
-    `;
+    await loadMessages();
 
 
     messageInput.value = "";
 
-
-    /*
-       Charge les anciens messages
-       de cette conversation.
-    */
-
-    await loadMessages();
-
-
     messageInput.focus();
 
-    }
+}
+    
 
 
     /* =====================================================
