@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messie Chat</title>
+</head>
+<body>
+
+    <h1>Messie Chat</h1>
+
+    <p>Bienvenue sur Messie Chat 👋</p>
+
+    <input type="text" placeholder="Écris un message..." id="message">
+    <button onclick="envoyerMessage()">Envoyer</button>
+
+    <div id="messages"></div>
+
+    <script>
+        function envoyerMessage() {
+            const input = document.getElementById("message");
+            const messages = document.getElementById("messages");
+
+            if (input.value.trim() !== "") {
+                const message = document.createElement("p");
+                message.textContent = "Vous : " + input.value;
+                messages.appendChild(message);
+
+                input.value = "";
+            }
+        }
+    </script>
+
+</body>
+</html>
