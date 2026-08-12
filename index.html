@@ -22,12 +22,14 @@
         body {
             font-family: Arial, sans-serif;
             background: #f1f3f6;
-            height: 100dvh;
             overflow: hidden;
         }
 
+        /* APPLICATION */
+
         .app {
             width: 100%;
+            height: 100vh;
             height: 100dvh;
             display: flex;
             flex-direction: column;
@@ -41,10 +43,13 @@
             min-height: 65px;
             background: #075e54;
             color: white;
+
             display: flex;
             align-items: center;
-            padding: 0 15px;
             justify-content: space-between;
+
+            padding: 0 15px;
+
             flex-shrink: 0;
         }
 
@@ -59,27 +64,85 @@
             margin-top: 3px;
         }
 
-        /* CHAT */
+        /* MENU */
+
+        .menu-button {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 25px;
+            cursor: pointer;
+
+            width: 40px;
+            height: 40px;
+        }
+
+        .menu {
+            position: absolute;
+            top: 60px;
+            right: 10px;
+
+            width: 190px;
+
+            background: white;
+            border-radius: 10px;
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+            display: none;
+
+            overflow: hidden;
+
+            z-index: 100;
+        }
+
+        .menu button {
+            width: 100%;
+
+            border: none;
+            background: white;
+
+            padding: 15px;
+
+            text-align: left;
+
+            font-size: 15px;
+        }
+
+        .menu button:hover {
+            background: #f1f1f1;
+        }
+
+        /* ZONE DE CHAT */
 
         .chat {
             flex: 1;
+
             min-height: 0;
+
             padding: 15px;
+
+            background: #efeae2;
+
             overflow-y: auto;
             overflow-x: hidden;
+
             -webkit-overflow-scrolling: touch;
-            background: #efeae2;
-            padding-bottom: 20px;
+
+            overscroll-behavior: contain;
         }
 
         .welcome {
             text-align: center;
+
             margin-top: 30px;
+
             color: #555;
         }
 
         .welcome h2 {
             margin-bottom: 8px;
+
             color: #075e54;
         }
 
@@ -91,113 +154,116 @@
 
         .message {
             margin: 10px 0;
+
             padding: 10px 13px;
+
             border-radius: 12px;
+
             max-width: 80%;
+
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
 
         .user-message {
             background: #d9fdd3;
+
             margin-left: auto;
         }
 
         .bot-message {
             background: white;
+
             margin-right: auto;
         }
 
         .time {
             display: block;
+
             font-size: 10px;
+
             color: #777;
+
             margin-top: 5px;
+
             text-align: right;
         }
 
-        /* ZONE D'ÉCRITURE */
+        /* BARRE D'ENVOI */
 
         .input-area {
-            min-height: 70px;
+            width: 100%;
+
+            min-height: 72px;
+            height: 72px;
+
             padding: 10px;
-            padding-bottom: calc(10px + env(safe-area-inset-bottom));
+
             display: flex;
+
             align-items: center;
+
             gap: 8px;
+
             background: #f0f2f5;
+
             border-top: 1px solid #ddd;
+
             flex-shrink: 0;
+
+            position: relative;
+
+            z-index: 50;
         }
 
         .input-area input {
             flex: 1;
+
             min-width: 0;
-            height: 48px;
+
+            height: 50px;
+
             border: none;
+
             outline: none;
+
             padding: 13px 16px;
+
             border-radius: 25px;
+
             font-size: 15px;
+
             background: white;
         }
 
         .send-button {
-            width: 48px;
-            min-width: 48px;
-            height: 48px;
+            width: 50px;
+
+            min-width: 50px;
+
+            height: 50px;
+
             border: none;
+
             border-radius: 50%;
+
             background: #075e54;
+
             color: white;
+
             font-size: 20px;
+
             cursor: pointer;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
         }
 
         .send-button:active {
             transform: scale(0.95);
-        }
-
-        /* MENU */
-
-        .menu-button {
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 25px;
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-        }
-
-        .menu {
-            position: absolute;
-            top: 60px;
-            right: 10px;
-            background: white;
-            width: 190px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            display: none;
-            overflow: hidden;
-            z-index: 10;
-        }
-
-        .menu button {
-            width: 100%;
-            border: none;
-            background: white;
-            padding: 15px;
-            text-align: left;
-            font-size: 15px;
-            cursor: pointer;
-        }
-
-        .menu button:hover {
-            background: #f1f1f1;
         }
 
         /* PETITS ÉCRANS */
@@ -207,6 +273,7 @@
             .header {
                 height: 60px;
                 min-height: 60px;
+
                 padding: 0 12px;
             }
 
@@ -220,27 +287,32 @@
 
             .chat {
                 padding: 10px;
-                padding-bottom: 20px;
             }
 
             .input-area {
-                min-height: 68px;
-                padding-left: 8px;
-                padding-right: 8px;
+                height: 72px;
+                min-height: 72px;
+
+                padding: 9px 8px;
             }
 
             .input-area input {
+                height: 50px;
+
                 font-size: 14px;
+
                 padding-left: 14px;
                 padding-right: 14px;
             }
 
             .send-button {
-                width: 46px;
-                min-width: 46px;
-                height: 46px;
+                width: 48px;
+                min-width: 48px;
+
+                height: 48px;
             }
         }
+
     </style>
 </head>
 
@@ -248,11 +320,20 @@
 
 <div class="app">
 
+    <!-- EN-TÊTE -->
+
     <header class="header">
 
         <div>
-            <div class="logo">Messie Chat</div>
-            <div class="status">🟢 En ligne</div>
+
+            <div class="logo">
+                Messie Chat
+            </div>
+
+            <div class="status">
+                🟢 En ligne
+            </div>
+
         </div>
 
         <button
@@ -264,6 +345,9 @@
         </button>
 
     </header>
+
+
+    <!-- MENU -->
 
     <div class="menu" id="menu">
 
@@ -281,19 +365,31 @@
 
     </div>
 
+
+    <!-- CONVERSATION -->
+
     <main class="chat" id="chat">
 
         <div class="welcome">
 
-            <h2>Bienvenue 👋</h2>
+            <h2>
+                Bienvenue 👋
+            </h2>
 
-            <p>Bienvenue sur Messie Chat.</p>
+            <p>
+                Bienvenue sur Messie Chat.
+            </p>
 
-            <p>Commence une conversation.</p>
+            <p>
+                Commence une conversation.
+            </p>
 
         </div>
 
     </main>
+
+
+    <!-- BARRE D'ENVOI -->
 
     <div class="input-area">
 
@@ -301,3 +397,188 @@
             type="text"
             id="messageInput"
             placeholder="Écris un message..."
+            autocomplete="off"
+            enterkeyhint="send"
+        >
+
+        <button
+            class="send-button"
+            onclick="sendMessage()"
+            aria-label="Envoyer"
+        >
+            ➤
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    const input =
+        document.getElementById("messageInput");
+
+    const chat =
+        document.getElementById("chat");
+
+    const menu =
+        document.getElementById("menu");
+
+
+    /* ENVOYER UN MESSAGE */
+
+    function sendMessage() {
+
+        const text =
+            input.value.trim();
+
+        if (text === "") {
+            return;
+        }
+
+        const welcome =
+            document.querySelector(".welcome");
+
+        if (welcome) {
+            welcome.remove();
+        }
+
+        const message =
+            document.createElement("div");
+
+        message.className =
+            "message user-message";
+
+        const now =
+            new Date();
+
+        const time =
+            now.getHours()
+                .toString()
+                .padStart(2, "0")
+            + ":"
+            +
+            now.getMinutes()
+                .toString()
+                .padStart(2, "0");
+
+        message.innerHTML = `
+            ${escapeHTML(text)}
+            <span class="time">${time}</span>
+        `;
+
+        chat.appendChild(message);
+
+        input.value = "";
+
+        chat.scrollTop =
+            chat.scrollHeight;
+
+        input.focus();
+    }
+
+
+    /* TOUCHE ENTRÉE */
+
+    input.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Enter") {
+
+                event.preventDefault();
+
+                sendMessage();
+            }
+
+        }
+    );
+
+
+    /* MENU */
+
+    function toggleMenu() {
+
+        if (
+            menu.style.display === "block"
+        ) {
+
+            menu.style.display =
+                "none";
+
+        } else {
+
+            menu.style.display =
+                "block";
+        }
+    }
+
+
+    /* NOUVELLE CONVERSATION */
+
+    function nouvelleConversation() {
+
+        chat.innerHTML = `
+
+            <div class="welcome">
+
+                <h2>
+                    Nouvelle conversation 💬
+                </h2>
+
+                <p>
+                    Écris ton premier message.
+                </p>
+
+            </div>
+
+        `;
+
+        menu.style.display =
+            "none";
+    }
+
+
+    /* PROTECTION HTML */
+
+    function escapeHTML(text) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent =
+            text;
+
+        return div.innerHTML;
+    }
+
+
+    /* FERMER LE MENU */
+
+    document.addEventListener(
+        "click",
+        function(event) {
+
+            const button =
+                document.querySelector(
+                    ".menu-button"
+                );
+
+            if (
+                !menu.contains(event.target)
+                &&
+                !button.contains(event.target)
+            ) {
+
+                menu.style.display =
+                    "none";
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
