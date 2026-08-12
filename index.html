@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
 
     <title>Messie Chat</title>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -25,27 +32,41 @@
             overflow: hidden;
         }
 
-        /* APPLICATION */
+        /* =========================
+           APPLICATION
+        ========================= */
 
         .app {
             width: 100%;
             height: 100vh;
             height: 100dvh;
+
             display: flex;
             flex-direction: column;
+
             background: white;
+
+            overflow: hidden;
         }
 
-        /* HEADER */
+
+        /* =========================
+           HEADER
+        ========================= */
 
         .header {
+
             height: 65px;
             min-height: 65px;
+
             background: #075e54;
+
             color: white;
 
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
 
             padding: 0 15px;
@@ -53,41 +74,95 @@
             flex-shrink: 0;
         }
 
-        .logo {
-            font-size: 22px;
-            font-weight: bold;
+
+        .header-left {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
         }
 
-        .status {
-            font-size: 12px;
-            opacity: 0.85;
-            margin-top: 3px;
-        }
 
-        /* MENU */
-
-        .menu-button {
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 25px;
-            cursor: pointer;
+        .back-button {
 
             width: 40px;
             height: 40px;
+
+            border: none;
+
+            background: transparent;
+
+            color: white;
+
+            font-size: 25px;
+
+            cursor: pointer;
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
         }
 
+
+        .logo {
+
+            font-size: 22px;
+
+            font-weight: bold;
+        }
+
+
+        .status {
+
+            font-size: 12px;
+
+            opacity: 0.85;
+
+            margin-top: 3px;
+        }
+
+
+        .menu-button {
+
+            width: 40px;
+            height: 40px;
+
+            border: none;
+
+            background: transparent;
+
+            color: white;
+
+            font-size: 25px;
+
+            cursor: pointer;
+        }
+
+
+        /* =========================
+           MENU
+        ========================= */
+
         .menu {
+
             position: absolute;
+
             top: 60px;
+
             right: 10px;
 
-            width: 190px;
+            width: 200px;
 
             background: white;
+
             border-radius: 10px;
 
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.2);
 
             display: none;
 
@@ -96,10 +171,13 @@
             z-index: 100;
         }
 
+
         .menu button {
+
             width: 100%;
 
             border: none;
+
             background: white;
 
             padding: 15px;
@@ -107,15 +185,255 @@
             text-align: left;
 
             font-size: 15px;
+
+            cursor: pointer;
         }
 
+
         .menu button:hover {
+
             background: #f1f1f1;
         }
 
-        /* ZONE DE CHAT */
+
+        /* =========================
+           PAGE CONTACTS
+        ========================= */
+
+        .contacts-page {
+
+            flex: 1;
+
+            min-height: 0;
+
+            display: flex;
+
+            flex-direction: column;
+
+            background: #ffffff;
+
+            overflow: hidden;
+        }
+
+
+        /* RECHERCHE */
+
+        .search-area {
+
+            padding: 10px;
+
+            background: #f0f2f5;
+
+            border-bottom: 1px solid #ddd;
+
+            flex-shrink: 0;
+        }
+
+
+        .search-box {
+
+            width: 100%;
+
+            height: 45px;
+
+            border: none;
+
+            outline: none;
+
+            border-radius: 23px;
+
+            padding: 0 16px;
+
+            font-size: 15px;
+
+            background: white;
+        }
+
+
+        /* LISTE */
+
+        .contact-list {
+
+            flex: 1;
+
+            min-height: 0;
+
+            overflow-y: auto;
+
+            -webkit-overflow-scrolling: touch;
+        }
+
+
+        .contact {
+
+            width: 100%;
+
+            min-height: 75px;
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 10px 15px;
+
+            background: white;
+
+            border: none;
+
+            border-bottom: 1px solid #eeeeee;
+
+            cursor: pointer;
+
+            text-align: left;
+        }
+
+
+        .contact:hover {
+
+            background: #f5f5f5;
+        }
+
+
+        .avatar {
+
+            width: 52px;
+            height: 52px;
+
+            min-width: 52px;
+
+            border-radius: 50%;
+
+            background: #075e54;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            margin-right: 12px;
+        }
+
+
+        .contact-info {
+
+            flex: 1;
+
+            min-width: 0;
+        }
+
+
+        .contact-name {
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            color: #222;
+
+            margin-bottom: 5px;
+        }
+
+
+        .last-message {
+
+            font-size: 14px;
+
+            color: #777;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+        }
+
+
+        .contact-time {
+
+            font-size: 11px;
+
+            color: #888;
+
+            margin-left: 8px;
+
+            align-self: flex-start;
+
+            margin-top: 5px;
+        }
+
+
+        /* =========================
+           BOUTON NOUVELLE CONVERSATION
+        ========================= */
+
+        .new-chat-button {
+
+            position: fixed;
+
+            right: 20px;
+
+            bottom: 20px;
+
+            width: 58px;
+
+            height: 58px;
+
+            border-radius: 50%;
+
+            border: none;
+
+            background: #075e54;
+
+            color: white;
+
+            font-size: 28px;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 4px 12px rgba(0, 0, 0, 0.25);
+
+            z-index: 20;
+        }
+
+
+        .new-chat-button:active {
+
+            transform: scale(0.95);
+        }
+
+
+        /* =========================
+           PAGE CONVERSATION
+        ========================= */
+
+        .conversation-page {
+
+            flex: 1;
+
+            min-height: 0;
+
+            display: none;
+
+            flex-direction: column;
+
+            overflow: hidden;
+        }
+
+
+        /* =========================
+           ZONE DES MESSAGES
+        ========================= */
 
         .chat {
+
             flex: 1;
 
             min-height: 0;
@@ -125,14 +443,15 @@
             background: #efeae2;
 
             overflow-y: auto;
+
             overflow-x: hidden;
 
             -webkit-overflow-scrolling: touch;
-
-            overscroll-behavior: contain;
         }
 
+
         .welcome {
+
             text-align: center;
 
             margin-top: 30px;
@@ -140,19 +459,17 @@
             color: #555;
         }
 
+
         .welcome h2 {
+
             margin-bottom: 8px;
 
             color: #075e54;
         }
 
-        .welcome p {
-            margin-top: 5px;
-        }
-
-        /* MESSAGES */
 
         .message {
+
             margin: 10px 0;
 
             padding: 10px 13px;
@@ -162,22 +479,29 @@
             max-width: 80%;
 
             word-wrap: break-word;
+
             overflow-wrap: break-word;
         }
 
+
         .user-message {
+
             background: #d9fdd3;
 
             margin-left: auto;
         }
 
-        .bot-message {
+
+        .contact-message {
+
             background: white;
 
             margin-right: auto;
         }
 
+
         .time {
+
             display: block;
 
             font-size: 10px;
@@ -189,13 +513,18 @@
             text-align: right;
         }
 
-        /* BARRE D'ENVOI */
+
+        /* =========================
+           BARRE D'ENVOI
+        ========================= */
 
         .input-area {
+
             width: 100%;
 
-            min-height: 72px;
             height: 72px;
+
+            min-height: 72px;
 
             padding: 10px;
 
@@ -210,13 +539,11 @@
             border-top: 1px solid #ddd;
 
             flex-shrink: 0;
-
-            position: relative;
-
-            z-index: 50;
         }
 
-        .input-area input {
+
+        .message-input {
+
             flex: 1;
 
             min-width: 0;
@@ -236,7 +563,9 @@
             background: white;
         }
 
+
         .send-button {
+
             width: 50px;
 
             min-width: 50px;
@@ -262,84 +591,162 @@
             justify-content: center;
         }
 
+
         .send-button:active {
+
             transform: scale(0.95);
         }
 
-        /* PETITS ÉCRANS */
+
+        /* =========================
+           RESPONSIVE MOBILE
+        ========================= */
 
         @media (max-width: 400px) {
 
             .header {
+
                 height: 60px;
+
                 min-height: 60px;
 
-                padding: 0 12px;
+                padding: 0 10px;
             }
 
+
             .logo {
+
                 font-size: 19px;
             }
 
+
             .status {
+
                 font-size: 11px;
             }
 
-            .chat {
-                padding: 10px;
+
+            .contact {
+
+                min-height: 72px;
+
+                padding: 9px 12px;
             }
 
+
+            .avatar {
+
+                width: 48px;
+
+                height: 48px;
+
+                min-width: 48px;
+
+                font-size: 18px;
+            }
+
+
+            .contact-name {
+
+                font-size: 15px;
+            }
+
+
+            .last-message {
+
+                font-size: 13px;
+            }
+
+
             .input-area {
+
                 height: 72px;
+
                 min-height: 72px;
 
                 padding: 9px 8px;
             }
 
-            .input-area input {
+
+            .message-input {
+
                 height: 50px;
 
                 font-size: 14px;
-
-                padding-left: 14px;
-                padding-right: 14px;
             }
 
+
             .send-button {
+
                 width: 48px;
+
                 min-width: 48px;
 
                 height: 48px;
             }
+
+
+            .new-chat-button {
+
+                right: 15px;
+
+                bottom: 15px;
+            }
         }
 
     </style>
+
 </head>
+
 
 <body>
 
+
 <div class="app">
 
-    <!-- EN-TÊTE -->
+
+    <!-- =========================
+         HEADER
+    ========================= -->
 
     <header class="header">
 
-        <div>
+        <div class="header-left">
 
-            <div class="logo">
-                Messie Chat
-            </div>
+            <button
+                id="backButton"
+                class="back-button"
+                onclick="showContacts()"
+            >
+                ←
+            </button>
 
-            <div class="status">
-                🟢 En ligne
+
+            <div>
+
+                <div
+                    class="logo"
+                    id="headerTitle"
+                >
+                    Messie Chat
+                </div>
+
+
+                <div
+                    class="status"
+                    id="headerStatus"
+                >
+                    🟢 En ligne
+                </div>
+
             </div>
 
         </div>
 
+
         <button
             class="menu-button"
             onclick="toggleMenu()"
-            aria-label="Menu"
         >
             ⋮
         </button>
@@ -347,141 +754,479 @@
     </header>
 
 
-    <!-- MENU -->
+    <!-- =========================
+         MENU
+    ========================= -->
 
-    <div class="menu" id="menu">
+    <div
+        class="menu"
+        id="menu"
+    >
 
-        <button onclick="nouvelleConversation()">
+        <button onclick="newConversation()">
             💬 Nouvelle conversation
         </button>
 
-        <button onclick="alert('Le profil sera disponible bientôt.')">
+
+        <button
+            onclick="alert('Le profil sera disponible bientôt.')"
+        >
             👤 Mon profil
         </button>
 
-        <button onclick="alert('Les paramètres arrivent bientôt.')">
+
+        <button
+            onclick="alert('Les paramètres seront disponibles bientôt.')"
+        >
             ⚙️ Paramètres
         </button>
 
     </div>
 
 
-    <!-- CONVERSATION -->
+    <!-- =========================
+         PAGE CONTACTS
+    ========================= -->
 
-    <main class="chat" id="chat">
+    <section
+        class="contacts-page"
+        id="contactsPage"
+    >
 
-        <div class="welcome">
 
-            <h2>
-                Bienvenue 👋
-            </h2>
+        <!-- RECHERCHE -->
 
-            <p>
-                Bienvenue sur Messie Chat.
-            </p>
+        <div class="search-area">
 
-            <p>
-                Commence une conversation.
-            </p>
+            <input
+                type="text"
+                class="search-box"
+                id="searchInput"
+                placeholder="🔍 Rechercher..."
+                oninput="searchContacts()"
+            >
 
         </div>
 
-    </main>
 
+        <!-- LISTE DES CONTACTS -->
 
-    <!-- BARRE D'ENVOI -->
-
-    <div class="input-area">
-
-        <input
-            type="text"
-            id="messageInput"
-            placeholder="Écris un message..."
-            autocomplete="off"
-            enterkeyhint="send"
+        <div
+            class="contact-list"
+            id="contactList"
         >
+
+
+            <!-- JEAN -->
+
+            <button
+                class="contact"
+                data-name="Jean"
+                onclick="openConversation('Jean')"
+            >
+
+                <div class="avatar">
+                    J
+                </div>
+
+
+                <div class="contact-info">
+
+                    <div class="contact-name">
+                        Jean
+                    </div>
+
+                    <div class="last-message">
+                        Salut, ça va ?
+                    </div>
+
+                </div>
+
+
+                <div class="contact-time">
+                    20:15
+                </div>
+
+            </button>
+
+
+            <!-- MARIE -->
+
+            <button
+                class="contact"
+                data-name="Marie"
+                onclick="openConversation('Marie')"
+            >
+
+                <div class="avatar">
+                    M
+                </div>
+
+
+                <div class="contact-info">
+
+                    <div class="contact-name">
+                        Marie
+                    </div>
+
+                    <div class="last-message">
+                        À demain !
+                    </div>
+
+                </div>
+
+
+                <div class="contact-time">
+                    19:42
+                </div>
+
+            </button>
+
+
+            <!-- PAUL -->
+
+            <button
+                class="contact"
+                data-name="Paul"
+                onclick="openConversation('Paul')"
+            >
+
+                <div class="avatar">
+                    P
+                </div>
+
+
+                <div class="contact-info">
+
+                    <div class="contact-name">
+                        Paul
+                    </div>
+
+                    <div class="last-message">
+                        D'accord 👍
+                    </div>
+
+                </div>
+
+
+                <div class="contact-time">
+                    18:30
+                </div>
+
+            </button>
+
+
+            <!-- SARAH -->
+
+            <button
+                class="contact"
+                data-name="Sarah"
+                onclick="openConversation('Sarah')"
+            >
+
+                <div class="avatar">
+                    S
+                </div>
+
+
+                <div class="contact-info">
+
+                    <div class="contact-name">
+                        Sarah
+                    </div>
+
+                    <div class="last-message">
+                        Bonjour
+                    </div>
+
+                </div>
+
+
+                <div class="contact-time">
+                    17:05
+                </div>
+
+            </button>
+
+
+        </div>
+
+
+        <!-- NOUVELLE CONVERSATION -->
 
         <button
-            class="send-button"
-            onclick="sendMessage()"
-            aria-label="Envoyer"
+            class="new-chat-button"
+            onclick="newConversation()"
         >
-            ➤
+            +
         </button>
 
-    </div>
+
+    </section>
+
+
+    <!-- =========================
+         PAGE CONVERSATION
+    ========================= -->
+
+    <section
+        class="conversation-page"
+        id="conversationPage"
+    >
+
+
+        <!-- MESSAGES -->
+
+        <main
+            class="chat"
+            id="chat"
+        >
+
+        </main>
+
+
+        <!-- ENVOI -->
+
+        <div class="input-area">
+
+            <input
+                type="text"
+                class="message-input"
+                id="messageInput"
+                placeholder="Écris un message..."
+                autocomplete="off"
+                enterkeyhint="send"
+            >
+
+
+            <button
+                class="send-button"
+                onclick="sendMessage()"
+            >
+                ➤
+            </button>
+
+        </div>
+
+    </section>
+
 
 </div>
 
 
 <script>
 
-    const input =
-        document.getElementById("messageInput");
+
+    /* =========================
+       VARIABLES
+    ========================= */
+
+    const contactsPage =
+        document.getElementById("contactsPage");
+
+
+    const conversationPage =
+        document.getElementById("conversationPage");
+
 
     const chat =
         document.getElementById("chat");
+
+
+    const messageInput =
+        document.getElementById("messageInput");
+
 
     const menu =
         document.getElementById("menu");
 
 
-    /* ENVOYER UN MESSAGE */
+    const backButton =
+        document.getElementById("backButton");
+
+
+    const headerTitle =
+        document.getElementById("headerTitle");
+
+
+    const headerStatus =
+        document.getElementById("headerStatus");
+
+
+    let currentContact = "";
+
+
+    /* =========================
+       OUVRIR UNE CONVERSATION
+    ========================= */
+
+    function openConversation(name) {
+
+        currentContact = name;
+
+
+        contactsPage.style.display =
+            "none";
+
+
+        conversationPage.style.display =
+            "flex";
+
+
+        backButton.style.display =
+            "flex";
+
+
+        headerTitle.textContent =
+            name;
+
+
+        headerStatus.textContent =
+            "🟢 En ligne";
+
+
+        menu.style.display =
+            "none";
+
+
+        chat.innerHTML = `
+
+            <div class="welcome">
+
+                <h2>
+                    Conversation avec ${escapeHTML(name)}
+                </h2>
+
+                <p>
+                    Commencez à discuter 👋
+                </p>
+
+            </div>
+
+        `;
+
+
+        messageInput.value = "";
+
+    }
+
+
+    /* =========================
+       RETOUR AUX CONTACTS
+    ========================= */
+
+    function showContacts() {
+
+        conversationPage.style.display =
+            "none";
+
+
+        contactsPage.style.display =
+            "flex";
+
+
+        backButton.style.display =
+            "none";
+
+
+        headerTitle.textContent =
+            "Messie Chat";
+
+
+        headerStatus.textContent =
+            "🟢 En ligne";
+
+
+        messageInput.value = "";
+
+    }
+
+
+    /* =========================
+       ENVOYER UN MESSAGE
+    ========================= */
 
     function sendMessage() {
 
         const text =
-            input.value.trim();
+            messageInput.value.trim();
+
 
         if (text === "") {
+
             return;
+
         }
+
 
         const welcome =
-            document.querySelector(".welcome");
+            document.querySelector(
+                "#chat .welcome"
+            );
+
 
         if (welcome) {
+
             welcome.remove();
+
         }
+
 
         const message =
             document.createElement("div");
 
+
         message.className =
             "message user-message";
 
+
         const now =
             new Date();
+
 
         const time =
             now.getHours()
                 .toString()
                 .padStart(2, "0")
-            + ":"
+            +
+            ":"
             +
             now.getMinutes()
                 .toString()
                 .padStart(2, "0");
 
+
         message.innerHTML = `
+
             ${escapeHTML(text)}
-            <span class="time">${time}</span>
+
+            <span class="time">
+                ${time}
+            </span>
+
         `;
+
 
         chat.appendChild(message);
 
-        input.value = "";
+
+        messageInput.value = "";
+
 
         chat.scrollTop =
             chat.scrollHeight;
 
-        input.focus();
+
+        messageInput.focus();
+
     }
 
 
-    /* TOUCHE ENTRÉE */
+    /* =========================
+       TOUCHE ENTRÉE
+    ========================= */
 
-    input.addEventListener(
+    messageInput.addEventListener(
         "keydown",
         function(event) {
 
@@ -490,13 +1235,63 @@
                 event.preventDefault();
 
                 sendMessage();
+
             }
 
         }
     );
 
 
-    /* MENU */
+    /* =========================
+       RECHERCHE CONTACTS
+    ========================= */
+
+    function searchContacts() {
+
+        const search =
+            document
+                .getElementById("searchInput")
+                .value
+                .toLowerCase()
+                .trim();
+
+
+        const contacts =
+            document.querySelectorAll(
+                ".contact"
+            );
+
+
+        contacts.forEach(function(contact) {
+
+            const name =
+                contact
+                    .getAttribute("data-name")
+                    .toLowerCase();
+
+
+            if (
+                name.includes(search)
+            ) {
+
+                contact.style.display =
+                    "flex";
+
+            } else {
+
+                contact.style.display =
+                    "none";
+
+            }
+
+        });
+
+    }
+
+
+    /* =========================
+       MENU
+    ========================= */
 
     function toggleMenu() {
 
@@ -511,74 +1306,80 @@
 
             menu.style.display =
                 "block";
+
         }
+
     }
 
 
-    /* NOUVELLE CONVERSATION */
+    /* =========================
+       NOUVELLE CONVERSATION
+    ========================= */
 
-    function nouvelleConversation() {
-
-        chat.innerHTML = `
-
-            <div class="welcome">
-
-                <h2>
-                    Nouvelle conversation 💬
-                </h2>
-
-                <p>
-                    Écris ton premier message.
-                </p>
-
-            </div>
-
-        `;
+    function newConversation() {
 
         menu.style.display =
             "none";
+
+
+        alert(
+            "La recherche de nouveaux contacts sera ajoutée prochainement."
+        );
+
     }
 
 
-    /* PROTECTION HTML */
+    /* =========================
+       PROTECTION HTML
+    ========================= */
 
     function escapeHTML(text) {
 
         const div =
             document.createElement("div");
 
+
         div.textContent =
             text;
 
+
         return div.innerHTML;
+
     }
 
 
-    /* FERMER LE MENU */
+    /* =========================
+       FERMER LE MENU
+    ========================= */
 
     document.addEventListener(
         "click",
         function(event) {
 
-            const button =
+            const menuButton =
                 document.querySelector(
                     ".menu-button"
                 );
 
+
             if (
                 !menu.contains(event.target)
                 &&
-                !button.contains(event.target)
+                !menuButton.contains(event.target)
             ) {
 
                 menu.style.display =
                     "none";
+
             }
 
         }
     );
 
+
 </script>
 
+
 </body>
+
 </html>
