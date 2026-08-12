@@ -2337,6 +2337,120 @@ async function loadMessages() {
 
     }
     /* =====================================================
+   MESSAGES EN TEMPS RÉEL
+===================================================== */
+
+let messagesChannel = null;
+
+
+function subscribeToMessages() {
+
+    if (!currentUser) {
+        return;
+    }
+
+
+    if (messagesChannel) {
+
+        supabaseClient.removeChannel(
+            messagesChannel
+        );
+
+        messagesChannel = null;
+
+    }
+
+
+    messagesChannel =
+        supabaseClient
+            .channel(
+                "messages-" + currentUser.id
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "INSERT",
+                    schema: "public",
+                    table: "messages"
+                },
+                function(payload) {
+
+                    const message =
+                        payload.new;
+
+
+                    if (
+                        !message ||
+                        !currentContact
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const isConversationMessage =
+                        (
+                            message.sender_id ===
+                            currentUser.id
+                            &&
+                            message.receiver_id ===
+                            currentContact.id
+                        )
+                        ||
+                        (
+                            message.sender_id ===
+                            currentContact.id
+                            &&
+                            message.receiver_id ===
+                            currentUser.id
+                        );
+
+
+                    if (
+                        !isConversationMessage
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    /*
+                       Évite d'afficher deux fois
+                       un message déjà ajouté
+                       immédiatement après l'envoi.
+                    */
+
+                    const alreadyDisplayed =
+                        document.querySelector(
+                            `[data-message-id="${message.id}"]`
+                        );
+
+
+                    if (
+                        alreadyDisplayed
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    displayMessage(
+                        message
+                    );
+
+
+                    chat.scrollTop =
+                        chat.scrollHeight;
+
+                }
+            )
+            .subscribe();
+
+        }
+    /* =====================================================
    AFFICHER UN MESSAGE
 ===================================================== */
 
