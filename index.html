@@ -1935,66 +1935,71 @@
        OUVRIR CONVERSATION
     ===================================================== */
 
-    function openConversation(profile) {
+    async function openConversation(profile) {
 
-        currentContact =
-            profile;
-
-
-        contactsPage.style.display =
-            "none";
+    currentContact =
+        profile;
 
 
-        conversationPage.style.display =
-            "flex";
+    contactsPage.style.display =
+        "none";
 
 
-        document.getElementById(
-            "backButton"
-        ).style.display =
-            "flex";
+    conversationPage.style.display =
+        "flex";
 
 
-        document.getElementById(
-            "headerTitle"
-        ).textContent =
-            profile.username;
+    document.getElementById(
+        "backButton"
+    ).style.display =
+        "flex";
 
 
-        document.getElementById(
-            "headerStatus"
-        ).textContent =
-            "Utilisateur Messie Chat";
+    document.getElementById(
+        "headerTitle"
+    ).textContent =
+        profile.username;
 
 
-        menu.style.display =
-            "none";
+    document.getElementById(
+        "headerStatus"
+    ).textContent =
+        "Utilisateur Messie Chat";
 
 
-        chat.innerHTML = `
-
-            <div class="welcome">
-
-                <h2>
-                    ${escapeHTML(profile.username)}
-                </h2>
-
-                <p>
-                    Cette conversation est prête 👋
-                </p>
-
-                <p style="margin-top:10px;font-size:13px;">
-                    Les messages réels seront activés à l'étape suivante.
-                </p>
-
-            </div>
-
-        `;
+    menu.style.display =
+        "none";
 
 
-        messageInput.value = "";
+    chat.innerHTML = `
 
-        messageInput.focus();
+        <div class="welcome">
+
+            <h2>
+                ${escapeHTML(profile.username)}
+            </h2>
+
+            <p>
+                Chargement des messages...
+            </p>
+
+        </div>
+
+    `;
+
+
+    messageInput.value = "";
+
+
+    /*
+       Charge les anciens messages
+       de cette conversation.
+    */
+
+    await loadMessages();
+
+
+    messageInput.focus();
 
     }
 
