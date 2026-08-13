@@ -2465,6 +2465,8 @@ function displayMessage(message) {
 
     const messageElement =
         document.createElement("div");
+    messageElement.dataset.messageId =
+    message.id;
 
 
     if (
