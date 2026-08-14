@@ -3228,7 +3228,81 @@ async function saveProfile() {
     ===================================================== */
 
     initializeApp();
+// =====================================================
+// MESSAGE VOCAL
+// =====================================================
 
+let mediaRecorder = null;
+let audioChunks = [];
+let isRecording = false;
+
+async function toggleVoiceRecording() {
+
+    const voiceButton = document.getElementById("voiceButton");
+
+    if (!isRecording) {
+
+        try {
+
+            const stream =
+                await navigator.mediaDevices.getUserMedia({
+                    audio: true
+                });
+
+            audioChunks = [];
+
+            mediaRecorder =
+                new MediaRecorder(stream);
+
+            mediaRecorder.ondataavailable = function(event) {
+
+                if (event.data.size > 0) {
+                    audioChunks.push(event.data);
+                }
+
+            };
+
+            mediaRecorder.onstop = async function() {
+
+                const audioBlob =
+                    new Blob(audioChunks, {
+                        type: "audio/webm"
+                    });
+
+                stream.getTracks().forEach(track => {
+                    track.stop();
+                });
+
+                voiceButton.textContent = "🎤";
+
+                await sendVoiceMessage(audioBlob);
+            };
+
+            mediaRecorder.start();
+
+            isRecording = true;
+
+            voiceButton.textContent = "⏹️";
+
+        } catch (error) {
+
+            console.error(
+                "Erreur microphone :",
+                error
+            );
+
+            alert(
+                "Impossible d'accéder au microphone."
+            );
+        }
+
+    } else {
+
+        mediaRecorder.stop();
+
+        isRecording = false;
+    }
+}
 </script>
 
                        
