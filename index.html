@@ -2453,6 +2453,7 @@ async function loadMessages() {
                     receiver_id,
                     content,
                     created_at
+                    voice_url
                 `)
                 .or(
                     `and(sender_id.eq.${currentUser.id},receiver_id.eq.${currentContact.id}),and(sender_id.eq.${currentContact.id},receiver_id.eq.${currentUser.id})`
