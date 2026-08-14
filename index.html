@@ -2734,61 +2734,6 @@ function displayMessage(message) {
     ===================================================== */
 
     async function showMyProfile() {
-function closeProfile() {
-
-    profilePage.style.display = "none";
-
-}
-async function saveProfile() {
-
-    if (!currentUser) {
-        return;
-    }
-
-    const fullName =
-        profileFullName.value.trim();
-
-    const bio =
-        profileBio.value.trim();
-
-    try {
-
-        const {
-            error
-        } = await supabaseClient
-            .from("profiles")
-            .update({
-                full_name: fullName,
-                bio: bio
-            })
-            .eq("id", currentUser.id);
-
-        if (error) {
-
-            console.error(
-                "Erreur sauvegarde profil :",
-                error
-            );
-
-            profileMessage.textContent =
-                "Impossible d'enregistrer les modifications.";
-
-            return;
-        }
-
-        profileMessage.textContent =
-            "Profil enregistré avec succès.";
-
-    } catch (error) {
-
-        console.error(error);
-
-        profileMessage.textContent =
-            "Une erreur est survenue.";
-
-    }
-
-}
 
     menu.style.display = "none";
 
@@ -2858,6 +2803,67 @@ async function saveProfile() {
     }
 
 }
+
+
+function closeProfile() {
+
+    profilePage.style.display = "none";
+
+}
+
+
+async function saveProfile() {
+
+    if (!currentUser) {
+        return;
+    }
+
+    const fullName =
+        profileFullName.value.trim();
+
+    const bio =
+        profileBio.value.trim();
+
+    try {
+
+        const {
+            error
+        } = await supabaseClient
+            .from("profiles")
+            .update({
+                full_name: fullName,
+                bio: bio
+            })
+            .eq("id", currentUser.id);
+
+        if (error) {
+
+            console.error(
+                "Erreur sauvegarde profil :",
+                error
+            );
+
+            profileMessage.textContent =
+                "Impossible d'enregistrer les modifications.";
+
+            return;
+        }
+
+        profileMessage.textContent =
+            "Profil enregistré avec succès.";
+
+    } catch (error) {
+
+        console.error(error);
+
+        profileMessage.textContent =
+            "Une erreur est survenue.";
+
+    }
+
+}
+
+
 function createDefaultAvatar(username) {
 
     const name =
@@ -2876,6 +2882,11 @@ function createDefaultAvatar(username) {
     );
 
 }
+    
+        
+                
+
+    
             
 
 
@@ -2883,31 +2894,7 @@ function createDefaultAvatar(username) {
        TRADUCTION ERREURS SUPABASE
     ===================================================== */
 
-    function translateAuthError(message) {
-
-        const text =
-            message.toLowerCase();
-
-
-        if (
-            text.includes(
-                "invalid login credentials"
-            )
-        ) {
-
-            return "E-mail ou mot de passe incorrect.";
-
-        }
-
-
-        if (
-            text.includes(
-                "user already registered"
-            )
-        ) {
-
-            return "Cette adresse e-mail possède déjà un compte.";
-
+    
         }
 
 
