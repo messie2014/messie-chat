@@ -2780,6 +2780,129 @@ function displayMessage(message) {
        PROFIL
     ===================================================== */
 
+/* =====================================================
+   OUVRIR MON PROFIL
+===================================================== */
+
+async function showMyProfile() {
+
+    menu.style.display = "none";
+
+    if (!currentUser) {
+        return;
+    }
+
+    profilePage.style.display = "block";
+
+    try {
+
+        profileMessage.textContent =
+            "Chargement du profil...";
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("profiles")
+                .select(
+                    "username, full_name, bio, avatar_url"
+                )
+                .eq(
+                    "id",
+                    currentUser.id
+                )
+                .single();
+
+        if (error) {
+
+            console.error(
+                "Erreur chargement profil :",
+                error
+            );
+
+            profileMessage.textContent =
+                "Impossible de charger le profil.";
+
+            return;
+        }
+
+        profileUsername.value =
+            data.username || "";
+
+        profileFullName.value =
+            data.full_name || "";
+
+        profileBio.value =
+            data.bio || "";
+
+        if (data.avatar_url) {
+
+            profilePhoto.src =
+                data.avatar_url;
+
+        } else {
+
+            profilePhoto.src =
+                "data:image/svg+xml;charset=UTF-8," +
+                encodeURIComponent(`
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="150"
+                         height="150"
+                         viewBox="0 0 150 150">
+                        <circle
+                            cx="75"
+                            cy="75"
+                            r="75"
+                            fill="#075e54"/>
+                        <text
+                            x="75"
+                            y="88"
+                            text-anchor="middle"
+                            font-size="60"
+                            fill="white">
+                            👤
+                        </text>
+                    </svg>
+                `);
+
+        }
+
+        profileMessage.textContent = "";
+
+    } catch (error) {
+
+        console.error(
+            "Erreur inattendue :",
+            error
+        );
+
+        profileMessage.textContent =
+            "Une erreur est survenue.";
+
+    }
+
+}
+
+
+/* =====================================================
+   FERMER MON PROFIL
+===================================================== */
+
+function closeProfile() {
+
+    profilePage.style.display =
+        "none";
+
+    profileMessage.textContent =
+        "";
+
+    profilePhotoInput.value =
+        "";
+
+    showContacts();
+
+}
 async function saveProfile() {
 
     if (!currentUser) {
