@@ -3349,19 +3349,19 @@ async function sendVoiceMessage(audioBlob) {
                     }
                 );
 
-        if (uploadError) {
+     if (uploadError) {
 
-            console.error(
-                "Erreur upload vocal :",
-                uploadError
-            );
+    console.error(
+        "Erreur upload vocal :",
+        uploadError
+    );
 
-            alert(
-                "Impossible d'envoyer le message vocal."
-            );
+    alert(
+        "Erreur : " + uploadError.message
+    );
 
-            return;
-        }
+    return;
+     }
 
         const { data } =
             supabaseClient
