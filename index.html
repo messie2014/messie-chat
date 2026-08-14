@@ -3303,6 +3303,98 @@ async function toggleVoiceRecording() {
         isRecording = false;
     }
 }
+    // =====================================================
+// ENVOYER UN MESSAGE VOCAL
+// =====================================================
+
+async function sendVoiceMessage(audioBlob) {
+
+    if (!currentUser) {
+        alert("Vous devez être connecté.");
+        return;
+    }
+
+    try {
+
+        const fileName =
+            `${currentUser.id}/${Date.now()}.webm`;
+
+        const { error: uploadError } =
+            await supabaseClient
+                .storage
+                .from("messages vocaux")
+                .upload(
+                    fileName,
+                    audioBlob,
+                    {
+                        contentType: "audio/webm",
+                        upsert: false
+                    }
+                );
+
+        if (uploadError) {
+
+            console.error(
+                "Erreur upload vocal :",
+                uploadError
+            );
+
+            alert(
+                "Impossible d'envoyer le message vocal."
+            );
+
+            return;
+        }
+
+        const { data } =
+            supabaseClient
+                .storage
+                .from("messages vocaux")
+                .getPublicUrl(fileName);
+
+        const audioUrl =
+            data.publicUrl;
+
+        console.log(
+            "Message vocal envoyé :",
+            audioUrl
+        );
+
+        // Afficher le vocal dans la conversation
+        const chat =
+            document.getElementById("chat");
+
+        const audio =
+            document.createElement("audio");
+
+        audio.controls = true;
+        audio.src = audioUrl;
+
+        const message =
+            document.createElement("div");
+
+        message.className =
+            "message user-message";
+
+        message.appendChild(audio);
+
+        chat.appendChild(message);
+
+        chat.scrollTop =
+            chat.scrollHeight;
+
+    } catch (error) {
+
+        console.error(
+            "Erreur message vocal :",
+            error
+        );
+
+        alert(
+            "Une erreur est survenue."
+        );
+    }
+}
 </script>
 
                        
