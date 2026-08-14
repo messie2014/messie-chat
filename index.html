@@ -2868,76 +2868,9 @@ function displayMessage(message) {
     initializeApp();
 
 </script>
-async function showMyProfile() {
 
-    menu.style.display = "none";
-
-    if (!currentUser) {
-        return;
-    }
-
-    profilePage.style.display = "block";
-
-    profileUsername.value =
-        currentUser.user_metadata?.username ||
-        currentUser.email?.split("@")[0] ||
-        "";
-
-    try {
-
-        const {
-            data,
-            error
-        } = await supabaseClient
-            .from("profiles")
-            .select("username, full_name, avatar_url, bio")
-            .eq("id", currentUser.id)
-            .single();
-
-        if (error) {
-
-            console.error(
-                "Erreur chargement profil :",
-                error
-            );
-
-            return;
-        }
-
-        if (data) {
-
-            profileUsername.value =
-                data.username || "";
-
-            profileFullName.value =
-                data.full_name || "";
-
-            profileBio.value =
-                data.bio || "";
-
-            if (data.avatar_url) {
-
-                profilePhoto.src =
-                    data.avatar_url;
-
-            } else {
-
-                profilePhoto.src =
-                    createDefaultAvatar(
-                        data.username
-                    );
-
-            }
-
-        }
-
-    } catch (error) {
-
-        console.error(error);
-
-    }
-
-}
+                       
+            
 
 </body>
 
