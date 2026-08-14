@@ -2856,6 +2856,24 @@ async function saveProfile() {
     }
 
 }
+function createDefaultAvatar(username) {
+
+    const name =
+        username || "U";
+
+    const letter =
+        name.charAt(0).toUpperCase();
+
+    return (
+        "https://ui-avatars.com/api/" +
+        "?name=" +
+        encodeURIComponent(letter) +
+        "&background=075e54" +
+        "&color=ffffff" +
+        "&size=300"
+    );
+
+}
             
 
 
