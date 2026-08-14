@@ -1467,7 +1467,53 @@ const profilePhoto =
 const profileMessage =
     document.getElementById("profileMessage");
 
+const profilePhotoInput =
+    document.getElementById("profilePhotoInput");
 
+
+/* =====================================================
+   SÉLECTION PHOTO DE PROFIL
+===================================================== */
+
+profilePhotoInput.addEventListener(
+    "change",
+    function() {
+
+        const file =
+            this.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        if (!file.type.startsWith("image/")) {
+
+            alert("Sélectionne une image.");
+
+            this.value = "";
+
+            return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+
+            alert(
+                "La photo ne doit pas dépasser 5 Mo."
+            );
+
+            this.value = "";
+
+            return;
+        }
+
+        const imageURL =
+            URL.createObjectURL(file);
+
+        profilePhoto.src =
+            imageURL;
+
+    }
+);
     /* =====================================================
        INITIALISATION
     ===================================================== */
