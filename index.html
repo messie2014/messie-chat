@@ -3339,7 +3339,7 @@ async function sendVoiceMessage(audioBlob) {
         const { error: uploadError } =
             await supabaseClient
                 .storage
-                .from("messages vocaux")
+                .from("voice-messages")
                 .upload(
                     fileName,
                     audioBlob,
@@ -3366,7 +3366,7 @@ async function sendVoiceMessage(audioBlob) {
         const { data } =
             supabaseClient
                 .storage
-                .from("messages vocaux")
+                .from("voice-messages")
                 .getPublicUrl(fileName);
 
         const audioUrl =
