@@ -3056,7 +3056,7 @@ async function saveProfile() {
             );
 
             profileMessage.textContent =
-                "Impossible d'enregistrer les modifications.";
+    "Erreur : " + uploadError.message;
 
             return;
         }
