@@ -560,6 +560,107 @@
 
             z-index: 20;
         }
+<!-- =========================
+     MON PROFIL
+========================= -->
+
+<section
+    class="profile-page"
+    id="profilePage"
+    style="display:none;"
+>
+
+    <div class="profile-header">
+
+        <button
+            class="profile-back"
+            onclick="closeProfile()"
+        >
+            ←
+        </button>
+
+        <div class="profile-header-title">
+            Mon profil
+        </div>
+
+    </div>
+
+    <div class="profile-content">
+
+        <div class="profile-photo-container">
+
+            <img
+                id="profilePhoto"
+                class="profile-photo"
+                src=""
+                alt="Photo de profil"
+            >
+
+            <label
+                for="profilePhotoInput"
+                class="change-photo-button"
+            >
+                📷
+            </label>
+
+            <input
+                type="file"
+                id="profilePhotoInput"
+                accept="image/*"
+                style="display:none;"
+            >
+
+        </div>
+
+        <label class="profile-label">
+            Nom d'utilisateur
+        </label>
+
+        <input
+            id="profileUsername"
+            class="profile-input"
+            type="text"
+            readonly
+        >
+
+        <label class="profile-label">
+            Nom et prénom
+        </label>
+
+        <input
+            id="profileFullName"
+            class="profile-input"
+            type="text"
+            maxlength="50"
+            placeholder="Ton nom et prénom"
+        >
+
+        <label class="profile-label">
+            À propos
+        </label>
+
+        <textarea
+            id="profileBio"
+            class="profile-input profile-bio"
+            maxlength="150"
+            placeholder="Écris quelque chose à propos de toi..."
+        ></textarea>
+
+        <button
+            class="save-profile-button"
+            onclick="saveProfile()"
+        >
+            💾 Enregistrer
+        </button>
+
+        <div
+            id="profileMessage"
+            class="profile-message"
+        ></div>
+
+    </div>
+
+</section>
 
 
         /* =========================
