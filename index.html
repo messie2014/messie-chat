@@ -2739,15 +2739,31 @@ function displayMessage(message) {
             .padStart(2, "0");
 
 
-    messageElement.innerHTML = `
+    if (message.voice_url) {
 
-        ${escapeHTML(message.content)}
+    const audio = document.createElement("audio");
 
-        <span class="time">
-            ${time}
-        </span>
+    audio.controls = true;
+    audio.src = message.voice_url;
 
-    `;
+    messageElement.appendChild(audio);
+
+} else {
+
+    messageElement.appendChild(
+        document.createTextNode(
+            message.content || ""
+        )
+    );
+}
+
+const timeElement =
+    document.createElement("span");
+
+timeElement.className = "time";
+timeElement.textContent = time;
+
+messageElement.appendChild(timeElement);
 
 
     chat.appendChild(
