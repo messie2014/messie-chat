@@ -2780,85 +2780,6 @@ function displayMessage(message) {
        PROFIL
     ===================================================== */
 
-    async function showMyProfile() {
-
-    menu.style.display = "none";
-
-    if (!currentUser) {
-        return;
-    }
-
-    profilePage.style.display = "block";
-
-    profileUsername.value =
-        currentUser.user_metadata?.username ||
-        currentUser.email?.split("@")[0] ||
-        "";
-
-    try {
-
-        const {
-            data,
-            error
-        } = await supabaseClient
-            .from("profiles")
-            .select("username, full_name, avatar_url, bio")
-            .eq("id", currentUser.id)
-            .single();
-
-        if (error) {
-
-            console.error(
-                "Erreur chargement profil :",
-                error
-            );
-
-            return;
-        }
-
-        if (data) {
-
-            profileUsername.value =
-                data.username || "";
-
-            profileFullName.value =
-                data.full_name || "";
-
-            profileBio.value =
-                data.bio || "";
-
-            if (data.avatar_url) {
-
-                profilePhoto.src =
-                    data.avatar_url;
-
-            } else {
-
-                profilePhoto.src =
-                    createDefaultAvatar(
-                        data.username
-                    );
-
-            }
-
-        }
-
-    } catch (error) {
-
-        console.error(error);
-
-    }
-
-}
-
-
-function closeProfile() {
-
-    profilePage.style.display = "none";
-
-}
-
-
 async function saveProfile() {
 
     if (!currentUser) {
@@ -2871,17 +2792,138 @@ async function saveProfile() {
     const bio =
         profileBio.value.trim();
 
+    const file =
+        profilePhotoInput.files[0];
+
     try {
+
+        profileMessage.textContent =
+            "Enregistrement...";
+
+
+        let avatarUrl = null;
+
+
+        /* =====================================================
+           ENVOYER LA PHOTO DANS SUPABASE STORAGE
+        ===================================================== */
+
+        if (file) {
+
+            const fileExtension =
+                file.name
+                    .split(".")
+                    .pop()
+                    .toLowerCase();
+
+            const fileName =
+                currentUser.id +
+                "-" +
+                Date.now() +
+                "." +
+                fileExtension;
+
+
+            const filePath =
+                currentUser.id +
+                "/" +
+                fileName;
+
+
+            const {
+                error: uploadError
+            } =
+                await supabaseClient
+                    .storage
+                    .from("avatars")
+                    .upload(
+                        filePath,
+                        file,
+                        {
+                            cacheControl: "3600",
+                            upsert: true
+                        }
+                    );
+
+
+            if (uploadError) {
+
+                console.error(
+                    "Erreur upload photo :",
+                    uploadError
+                );
+
+                profileMessage.textContent =
+                    "Impossible d'envoyer la photo.";
+
+                return;
+            }
+
+
+            /* =================================================
+               RÉCUPÉRER L'URL PUBLIQUE
+            ================================================= */
+
+            const {
+                data: publicUrlData
+            } =
+                supabaseClient
+                    .storage
+                    .from("avatars")
+                    .getPublicUrl(
+                        filePath
+                    );
+
+
+            avatarUrl =
+                publicUrlData.publicUrl;
+
+        }
+
+
+        /* =====================================================
+           PRÉPARER LES DONNÉES DU PROFIL
+        ===================================================== */
+
+        const profileData = {
+
+            full_name:
+                fullName,
+
+            bio:
+                bio
+
+        };
+
+
+        /*
+           On ajoute avatar_url seulement
+           lorsqu'une nouvelle photo a été sélectionnée.
+        */
+
+        if (avatarUrl) {
+
+            profileData.avatar_url =
+                avatarUrl;
+
+        }
+
+
+        /* =====================================================
+           ENREGISTRER LE PROFIL
+        ===================================================== */
 
         const {
             error
-        } = await supabaseClient
-            .from("profiles")
-            .update({
-                full_name: fullName,
-                bio: bio
-            })
-            .eq("id", currentUser.id);
+        } =
+            await supabaseClient
+                .from("profiles")
+                .update(profileData)
+                .eq(
+                    "id",
+                    currentUser.id
+                );
+
 
         if (error) {
 
@@ -2896,37 +2938,42 @@ async function saveProfile() {
             return;
         }
 
+
+        /* =====================================================
+           ACTUALISER L'IMAGE
+        ===================================================== */
+
+        if (avatarUrl) {
+
+            profilePhoto.src =
+                avatarUrl;
+
+        }
+
+
         profileMessage.textContent =
             "Profil enregistré avec succès.";
 
+
+        /*
+           Réinitialise le champ fichier
+           après l'enregistrement.
+        */
+
+        profilePhotoInput.value = "";
+
+
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Erreur inattendue :",
+            error
+        );
 
         profileMessage.textContent =
             "Une erreur est survenue.";
 
     }
-
-}
-
-
-function createDefaultAvatar(username) {
-
-    const name =
-        username || "U";
-
-    const letter =
-        name.charAt(0).toUpperCase();
-
-    return (
-        "https://ui-avatars.com/api/" +
-        "?name=" +
-        encodeURIComponent(letter) +
-        "&background=075e54" +
-        "&color=ffffff" +
-        "&size=300"
-    );
 
 }
     
