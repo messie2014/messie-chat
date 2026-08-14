@@ -3359,6 +3359,14 @@ async function sendVoiceMessage(audioBlob) {
             "Message vocal envoyé :",
             audioUrl
         );
+        await supabaseClient
+    .from("messages")
+    .insert({
+        sender_id: currentUser.id,
+        receiver_id: currentContact.id,
+        content: "",
+        voice_url: audioUrl
+    });
 
         // Afficher le vocal dans la conversation
         const chat =
