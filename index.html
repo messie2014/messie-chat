@@ -1754,7 +1754,7 @@ subscribeToMessages();
             } =
                 await supabaseClient
                     .from("profiles")
-                    .select("id, username, created_at")
+                    .select("id, username")
                     .order("username", {
                         ascending: true
                     });
