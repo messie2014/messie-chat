@@ -3657,6 +3657,138 @@ document.getElementById("mediaInput").addEventListener(
 
     }
 );
+    // =====================================================
+// ENVOYER PHOTO / VIDÉO
+// =====================================================
+
+async function sendMediaMessage(file) {
+
+    if (!currentUser || !currentContact) {
+        alert("Ouvre d'abord une conversation.");
+        return;
+    }
+
+    try {
+
+        console.log("Envoi du média :", file.name);
+
+        const extension =
+            file.name.split(".").pop().toLowerCase();
+
+        const fileName =
+            `${currentUser.id}/${Date.now()}.${extension}`;
+
+        // Upload dans le bucket chat-media
+        const { error: uploadError } =
+            await supabaseClient
+                .storage
+                .from("chat-media")
+                .upload(
+                    fileName,
+                    file,
+                    {
+                        contentType: file.type,
+                        upsert: false
+                    }
+                );
+
+        if (uploadError) {
+
+            console.error(
+                "Erreur upload média :",
+                uploadError
+            );
+
+            alert(
+                "Impossible d'envoyer le fichier : " +
+                uploadError.message
+            );
+
+            return;
+        }
+
+        // URL publique
+        const { data: publicUrlData } =
+            supabaseClient
+                .storage
+                .from("chat-media")
+                .getPublicUrl(fileName);
+
+        const mediaUrl =
+            publicUrlData.publicUrl;
+
+        console.log(
+            "URL du média :",
+            mediaUrl
+        );
+
+        // Enregistrer le message
+        const { data, error } =
+            await supabaseClient
+                .from("messages")
+                .insert({
+
+                    sender_id:
+                        currentUser.id,
+
+                    receiver_id:
+                        currentContact.id,
+
+                    content:
+                        file.type.startsWith("image/")
+                            ? "📷 Photo"
+                            : "🎥 Vidéo",
+
+                    voice_url:
+                        null,
+
+                    media_url:
+                        mediaUrl,
+
+                    media_type:
+                        file.type
+
+                })
+                .select()
+                .single();
+
+        if (error) {
+
+            console.error(
+                "Erreur enregistrement média :",
+                error
+            );
+
+            alert(
+                "Le fichier a été envoyé, mais le message n'a pas pu être enregistré : " +
+                error.message
+            );
+
+            return;
+        }
+
+        console.log(
+            "Média envoyé avec succès :",
+            data
+        );
+
+        displayMediaMessage(data);
+
+        chat.scrollTop =
+            chat.scrollHeight;
+
+    } catch (error) {
+
+        console.error(
+            "Erreur inattendue :",
+            error
+        );
+
+        alert(
+            "Une erreur est survenue lors de l'envoi du média."
+        );
+    }
+}
 </script>
 
                        
