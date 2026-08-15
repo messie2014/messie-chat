@@ -3452,6 +3452,74 @@ if (messageError) {
         );
     }
 }
+
+    // =====================================================
+// APPEL AUDIO
+// =====================================================
+
+async function startAudioCall() {
+
+    if (!currentUser) {
+        alert("Vous devez être connecté.");
+        return;
+    }
+
+    if (!currentContact) {
+        alert("Ouvre d'abord une conversation.");
+        return;
+    }
+
+    try {
+
+        const { data, error } =
+            await supabaseClient
+                .from("calls")
+                .insert({
+                    caller_id: currentUser.id,
+                    receiver_id: currentContact.id,
+                    call_type: "audio",
+                    status: "calling"
+                })
+                .select()
+                .single();
+
+        if (error) {
+
+            console.error(
+                "Erreur création appel :",
+                error
+            );
+
+            alert(
+                "Impossible de démarrer l'appel : " +
+                error.message
+            );
+
+            return;
+        }
+
+        console.log(
+            "Appel créé :",
+            data
+        );
+
+        alert(
+            "Appel audio lancé vers " +
+            currentContact.username
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Erreur appel audio :",
+            error
+        );
+
+        alert(
+            "Une erreur est survenue pendant l'appel."
+        );
+    }
+}
 </script>
 
                        
