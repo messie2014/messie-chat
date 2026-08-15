@@ -3932,6 +3932,59 @@ async function requestNotificationPermission() {
 
     }
 }
+    // =====================================================
+// ACTIVER LES NOTIFICATIONS POUR L'UTILISATEUR
+// =====================================================
+
+async function enableNotifications() {
+
+    if (!currentUser) {
+        console.log("Utilisateur non connecté.");
+        return;
+    }
+
+    try {
+
+        if (!("Notification" in window)) {
+            alert(
+                "Les notifications ne sont pas supportées par ce navigateur."
+            );
+            return;
+        }
+
+        const permission =
+            await Notification.requestPermission();
+
+        if (permission !== "granted") {
+
+            alert(
+                "Les notifications sont désactivées."
+            );
+
+            return;
+        }
+
+        console.log(
+            "Notifications autorisées pour :",
+            currentUser.id
+        );
+
+        new Notification(
+            "Messie Chat",
+            {
+                body: "Les notifications sont maintenant activées 🔔"
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Erreur notifications :",
+            error
+        );
+
+    }
+}
 </script>
 
                        
