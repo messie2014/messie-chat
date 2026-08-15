@@ -3610,6 +3610,53 @@ function selectMedia() {
     mediaInput.click();
 
 }
+    // =====================================================
+// PHOTO / VIDÉO SÉLECTIONNÉE
+// =====================================================
+
+document.getElementById("mediaInput").addEventListener(
+    "change",
+    async function() {
+
+        const file = this.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        console.log("Média sélectionné :", file.name);
+
+        if (
+            !file.type.startsWith("image/") &&
+            !file.type.startsWith("video/")
+        ) {
+
+            alert(
+                "Sélectionne uniquement une photo ou une vidéo."
+            );
+
+            this.value = "";
+
+            return;
+        }
+
+        if (file.size > 50 * 1024 * 1024) {
+
+            alert(
+                "Le fichier ne doit pas dépasser 50 Mo."
+            );
+
+            this.value = "";
+
+            return;
+        }
+
+        await sendMediaMessage(file);
+
+        this.value = "";
+
+    }
+);
 </script>
 
                        
