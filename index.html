@@ -3367,13 +3367,19 @@ async function sendVoiceMessage(audioBlob) {
      }
 
         const { data } =
-            supabaseClient
-                .storage
-                .from("voice-messages")
-                .getPublicUrl(fileName);
+        const { data, error: urlError } =
+    await supabaseClient
+        .storage
+        .from("voice-messages")
+        .createSignedUrl(fileName, 60 * 60 * 24 * 365);
 
-        const audioUrl =
-            data.publicUrl;
+if (urlError) {
+    console.error("Erreur création URL vocal :", urlError);
+    alert("Impossible de créer l'URL du vocal : " + urlError.message);
+    return;
+}
+
+const audioUrl = data.signedUrl;
 
         console.log(
             "Message vocal envoyé :",
