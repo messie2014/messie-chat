@@ -3923,7 +3923,10 @@ async function activerLesNotifications() {
             console.log("Notifications non supportées.");
             return;
         }
+alert("Demande d'autorisation des notifications...");
 
+const permission =
+    await Notification.requestPermission();
         const permission =
             await Notification.requestPermission();
 
