@@ -2698,7 +2698,15 @@ function subscribeToMessages() {
 
                     }
 
+if (message.media_url) {
 
+    displayMediaMessage(message);
+
+} else {
+
+    displayMessage(message);
+
+}
                     displayMessage(
                         message
                     );
