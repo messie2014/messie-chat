@@ -5,21 +5,34 @@ self.addEventListener("push", function(event) {
     try {
         data = event.data ? event.data.json() : {};
     } catch (error) {
-        console.error("Erreur données push :", error);
+        data = {
+            title: "Messie Chat",
+            body: event.data
+                ? event.data.text()
+                : "Nouveau message"
+        };
     }
 
     const title =
         data.title || "Messie Chat";
 
     const options = {
+
         body:
-            data.body || "Nouveau message reçu",
+            data.body ||
+            "Vous avez reçu un nouveau message.",
+
         icon:
-            data.icon || "/icon-192.png",
+            data.icon ||
+            "/icon.png",
+
         badge:
-            data.badge || "/icon-192.png",
+            data.badge ||
+            "/icon.png",
+
         data:
-            data.url || "/"
+            data.data || {}
+
     };
 
     event.waitUntil(
@@ -28,6 +41,7 @@ self.addEventListener("push", function(event) {
             options
         )
     );
+
 });
 
 
@@ -52,12 +66,11 @@ self.addEventListener(
                 }
 
                 if (clients.openWindow) {
-                    return clients.openWindow(
-                        event.notification.data || "/"
-                    );
+                    return clients.openWindow("/");
                 }
 
             })
         );
+
     }
 );
