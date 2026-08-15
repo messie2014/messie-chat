@@ -2746,6 +2746,7 @@ function displayMessage(message) {
 
     audio.controls = true;
     audio.src = message.voice_url;
+        console.log("URL du vocal :", message.voice_url);
 audio.preload = "metadata";
 
     messageElement.appendChild(audio);
