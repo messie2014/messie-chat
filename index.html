@@ -3379,14 +3379,32 @@ async function sendVoiceMessage(audioBlob) {
             "Message vocal envoyé :",
             audioUrl
         );
-        await supabaseClient
-    .from("messages")
-    .insert({
-        sender_id: currentUser.id,
-        receiver_id: currentContact.id,
-        content: "",
-        voice_url: audioUrl
-    });
+        const { data: messageData, error: messageError } =
+    await supabaseClient
+        .from("messages")
+        .insert({
+            sender_id: currentUser.id,
+            receiver_id: currentContact.id,
+            content: "",
+            voice_url: audioUrl
+        })
+        .select()
+        .single();
+
+if (messageError) {
+
+    console.error(
+        "Erreur enregistrement message vocal :",
+        messageError
+    );
+
+    alert(
+        "Erreur enregistrement : " +
+        messageError.message
+    );
+
+    return;
+            }
 
         // Afficher le vocal dans la conversation
         const chat =
