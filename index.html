@@ -2696,6 +2696,68 @@ function subscribeToMessages() {
             .subscribe();
 
         }
+
+    // =====================================================
+// APPELS ENTRANTS EN TEMPS RÉEL
+// =====================================================
+
+let callsChannel = null;
+
+function subscribeToCalls() {
+
+    if (!currentUser) {
+        return;
+    }
+
+    if (callsChannel) {
+
+        supabaseClient.removeChannel(
+            callsChannel
+        );
+
+        callsChannel = null;
+    }
+
+    callsChannel =
+        supabaseClient
+            .channel(
+                "calls-" + currentUser.id
+            )
+            .on(
+                "postgres_changes",
+                {
+                    event: "INSERT",
+                    schema: "public",
+                    table: "calls",
+                    filter:
+                        "receiver_id=eq." + currentUser.id
+                },
+                function(payload) {
+
+                    const call = payload.new;
+
+                    if (!call) {
+                        return;
+                    }
+
+                    console.log(
+                        "Appel entrant :",
+                        call
+                    );
+
+                    if (
+                        call.call_type === "audio" &&
+                        call.status === "calling"
+                    ) {
+
+                        alert(
+                            "📞 Appel audio entrant !"
+                        );
+                    }
+                }
+            )
+            .subscribe();
+}
     /* =====================================================
    AFFICHER UN MESSAGE
 ===================================================== */
