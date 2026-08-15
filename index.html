@@ -3789,6 +3789,102 @@ async function sendMediaMessage(file) {
         );
     }
 }
+    // =====================================================
+// AFFICHER PHOTO / VIDÉO
+// =====================================================
+
+function displayMediaMessage(message) {
+
+    if (!message) {
+        return;
+    }
+
+    const messageElement =
+        document.createElement("div");
+
+    messageElement.className =
+        message.sender_id === currentUser.id
+            ? "message user-message"
+            : "message contact-message";
+
+    messageElement.dataset.messageId =
+        message.id;
+
+    if (message.media_type &&
+        message.media_type.startsWith("image/")) {
+
+        const image =
+            document.createElement("img");
+
+        image.src =
+            message.media_url;
+
+        image.style.maxWidth =
+            "250px";
+
+        image.style.maxHeight =
+            "350px";
+
+        image.style.borderRadius =
+            "10px";
+
+        image.style.display =
+            "block";
+
+        messageElement.appendChild(image);
+
+    } else if (
+        message.media_type &&
+        message.media_type.startsWith("video/")
+    ) {
+
+        const video =
+            document.createElement("video");
+
+        video.src =
+            message.media_url;
+
+        video.controls =
+            true;
+
+        video.style.maxWidth =
+            "280px";
+
+        video.style.maxHeight =
+            "400px";
+
+        video.style.borderRadius =
+            "10px";
+
+        video.style.display =
+            "block";
+
+        messageElement.appendChild(video);
+
+    }
+
+    const timeElement =
+        document.createElement("span");
+
+    timeElement.className =
+        "time";
+
+    const date =
+        new Date(message.created_at);
+
+    timeElement.textContent =
+        date.getHours().toString().padStart(2, "0")
+        + ":" +
+        date.getMinutes().toString().padStart(2, "0");
+
+    messageElement.appendChild(
+        timeElement
+    );
+
+    chat.appendChild(
+        messageElement
+    );
+}
 </script>
 
                        
