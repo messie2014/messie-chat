@@ -3385,7 +3385,7 @@ async function sendVoiceMessage(audioBlob) {
         .insert({
             sender_id: currentUser.id,
             receiver_id: currentContact.id,
-            content: "",
+            content: "🎤 Message vocal",
             voice_url: audioUrl
         })
         .select()
