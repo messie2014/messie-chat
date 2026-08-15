@@ -2464,7 +2464,7 @@ console.log("Chargement des messages pour :", currentUser.id, currentContact.id)
 
 console.log("Messages récupérés :", data);
         if (error) {
-
+alert("Erreur Supabase : " + error.message);
             console.error(
                 "Erreur chargement messages :",
                 error
