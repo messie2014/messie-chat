@@ -1276,6 +1276,21 @@
                 autocomplete="off"
                 enterkeyhint="send"
             >
+            <button
+    class="media-button"
+    id="mediaButton"
+    onclick="selectMedia()"
+    title="Photo ou vidéo"
+>
+    📎
+</button>
+
+<input
+    type="file"
+    id="mediaInput"
+    accept="image/*,video/*"
+    style="display:none;"
+>
     <button
         class="voice-button"
         id="voiceButton"
