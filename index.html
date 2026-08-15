@@ -2556,14 +2556,21 @@ alert("Erreur Supabase : " + error.message);
 
 
         data.forEach(
-            function(message) {
+    function(message) {
 
-                displayMessage(
-                    message
-                );
+        if (message.media_url) {
 
-            }
-        );
+            displayMediaMessage(message);
+
+        } else {
+
+            displayMessage(message);
+
+        }
+
+    }
+);
+        
 
 
         chat.scrollTop =
