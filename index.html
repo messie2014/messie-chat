@@ -3899,6 +3899,39 @@ function displayMediaMessage(message) {
         messageElement
     );
 }
+    // =====================================================
+// NOTIFICATIONS PUSH
+// =====================================================
+
+async function requestNotificationPermission() {
+
+    if (!("Notification" in window)) {
+        console.log("Les notifications ne sont pas supportées.");
+        return;
+    }
+
+    const permission =
+        await Notification.requestPermission();
+
+    console.log(
+        "Permission notifications :",
+        permission
+    );
+
+    if (permission === "granted") {
+
+        console.log(
+            "Notifications autorisées ✅"
+        );
+
+    } else {
+
+        console.log(
+            "Notifications refusées."
+        );
+
+    }
+}
 </script>
 
                        
