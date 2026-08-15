@@ -3949,6 +3949,107 @@ async function enableNotifications() {
     try {
 
         if (!("Notification" in window)) {
+            alert("Les notifications ne sont pas supportées.");
+            return;
+        }
+
+        if (!("serviceWorker" in navigator)) {
+            alert("Les Service Workers ne sont pas supportés.");
+            return;
+        }
+
+        if (!("PushManager" in window)) {
+            alert("Les notifications Push ne sont pas supportées.");
+            return;
+        }
+
+        const permission =
+            await Notification.requestPermission();
+
+        if (permission !== "granted") {
+            alert("Autorisation des notifications refusée.");
+            return;
+        }
+
+        console.log("Notifications autorisées ✅");
+
+        const registration =
+            await navigator.serviceWorker.register("/sw.js");
+
+        await navigator.serviceWorker.ready;
+
+        console.log("Service Worker prêt ✅");
+
+        let subscription =
+            await registration.pushManager.getSubscription();
+
+        if (!subscription) {
+
+            console.log(
+                "Création de l'abonnement Push..."
+            );
+
+            subscription =
+                await registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: null
+                });
+        }
+
+        console.log(
+            "Abonnement Push créé :",
+            subscription
+        );
+
+        const { error } =
+            await supabase
+                .from("push_subscriptions")
+                .upsert(
+                    {
+                        user_id: currentUser.id,
+                        subscription: subscription.toJSON()
+                    },
+                    {
+                        onConflict: "user_id"
+                    }
+                );
+
+        if (error) {
+            console.error(
+                "Erreur Supabase :",
+                error
+            );
+            alert(
+                "Impossible d'enregistrer l'abonnement."
+            );
+            return;
+        }
+
+        console.log(
+            "Abonnement enregistré dans Supabase ✅"
+        );
+
+        alert(
+            "Notifications activées ✅"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Erreur notifications :",
+            error
+        );
+
+        alert(
+            "Erreur : " + error.message
+        );
+    }
+}
+   
+
+    try {
+
+        if (!("Notification" in window)) {
             console.log("Notifications non supportées.");
             return;
         }
@@ -4033,48 +4134,7 @@ async function enableNotifications() {
     }
 }
 
-    try {
-
-        if (!("Notification" in window)) {
-            alert(
-                "Les notifications ne sont pas supportées par ce navigateur."
-            );
-            return;
-        }
-
-        const permission =
-            await Notification.requestPermission();
-
-        if (permission !== "granted") {
-
-            alert(
-                "Les notifications sont désactivées."
-            );
-
-            return;
-        }
-
-        console.log(
-            "Notifications autorisées pour :",
-            currentUser.id
-        );
-
-        new Notification(
-            "Messie Chat",
-            {
-                body: "Les notifications sont maintenant activées 🔔"
-            }
-        );
-
-    } catch (error) {
-
-        console.error(
-            "Erreur notifications :",
-            error
-        );
-
-    }
-}
+    
 </script>
 
                        
